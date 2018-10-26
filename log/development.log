@@ -1,0 +1,4 @@
+  [1m[35m (735.1ms)[0m  [1m[35mCREATE DATABASE "QNA_development" ENCODING = 'unicode'[0m
+  ↳ /Users/ad1n0d1n/.rvm/gems/ruby-2.5.1@qna/bin/rake:23
+  [1m[35m (517.4ms)[0m  [1m[35mCREATE DATABASE "QNA_test" ENCODING = 'unicode'[0m
+  ↳ /Users/ad1n0d1n/.rvm/gems/ruby-2.5.1@qna/bin/rake:23
