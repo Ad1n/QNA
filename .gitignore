@@ -3,3 +3,5 @@
 /config/master.key
 config/database.yml
 
+**/log
+**/tmp
