@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :answer do
-    body { "MyText" }
+    body { "Test answer" }
   end
 
   factory :invalid_answer, class: "Answer" do

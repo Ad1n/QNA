@@ -1,0 +1,11 @@
+H1=@question.title
+p=@question.body
+
+H4 List of answers:
+
+-@question.answers.each do |ans|
+  p=ans.body
+
+p=render "answers/new"
+
+p=link_to "Back", questions_path
