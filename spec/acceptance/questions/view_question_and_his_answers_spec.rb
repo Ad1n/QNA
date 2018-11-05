@@ -6,10 +6,11 @@ as a user
 i want to be able to view question and his answers.
 ) do
 
-  given(:question) { create(:question) }
+  given(:user) { create(:user) }
+  given(:question) { create(:question, user_id: user.id) }
   given(:answer) { create(:answer, question_id: question.id) }
 
-  scenario "User view question and his answers" do
+  scenario "User try to view question and his answers" do
     visit question_path(question, answer)
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)

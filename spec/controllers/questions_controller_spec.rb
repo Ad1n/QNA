@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  before { @user = create(:user) }
+  let(:question) { create(:question, user_id: @user.id) }
+
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    let(:questions) { create_list(:question, 2, user_id: @user.id) }
 
     before do
       get :index

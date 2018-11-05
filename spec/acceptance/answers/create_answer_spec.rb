@@ -7,7 +7,7 @@ i want to be able to create answer.
 ) do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { create(:question, user_id: user.id) }
 
   scenario "Authenticated user try to create answer for current quesiton" do
     sign_in(user)

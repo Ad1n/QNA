@@ -6,8 +6,8 @@ as an user
 i want to be able to view list of questions.
 ) do
 
-  given(:questions) { create_list(:question, 3) }
   given(:user) { create(:user) }
+  given(:questions) { create_list(:question, 3, user_id: user.id) }
 
   scenario "Non-authenticated user view list of all questions" do
     view_question_list(questions)

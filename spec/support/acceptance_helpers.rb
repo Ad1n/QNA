@@ -20,4 +20,5 @@ module AcceptanceHelpers
     fill_in :body, with: "Test answer"
     click_on "Answer the question"
   end
+
 end
