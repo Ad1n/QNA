@@ -3,7 +3,7 @@ module AcceptanceHelpers
     visit new_user_session_path
     fill_in "Email", with: user.email
     fill_in "Password", with: user.password
-    click_on "Log in"
+    click_button "Log in"
   end
 
   def view_question_list(questions)
@@ -13,5 +13,11 @@ module AcceptanceHelpers
       expect(page).to have_content(question.title)
       expect(page).to have_content(question.body)
     end
+  end
+
+  def create_answer(question)
+    visit question_path(question)
+    fill_in :body, with: "Test answer"
+    click_on "Answer the question"
   end
 end

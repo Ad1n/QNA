@@ -1,22 +1,24 @@
 require "rails_helper"
 
 feature "Create new answer for current question", %(
-In order to create answer for current question
+In order to help with finding answers for question
 as a user
 i want to be able to create answer.
 ) do
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer, question_id: question.id) }
 
-  scenario "Authenticated user create answer for current quesiton" do
+  scenario "Authenticated user try to create answer for current quesiton" do
     sign_in(user)
-    visit question_path(question)
-    fill_in :body, with: answer.body
-    click_on "Answer the question"
+    create_answer(question)
 
-    expect(page).to have_content(answer.body)
+    expect(page).to have_content("Test answer")
+  end
+
+  scenario "Non-authenticated user try to create answer for question." do
+    create_answer(question)
+    expect(page).to have_content("You need to sign in or sign up before continuing.")
   end
 
 end
