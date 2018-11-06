@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   before { @user = create(:user) }
-  let(:question) { create(:question, user_id: @user.id) }
+  let(:question) { create(:question, user: @user) }
 
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2, user_id: @user.id) }
+    let(:questions) { create_list(:question, 2, user: @user) }
 
     before do
       get :index
@@ -37,7 +37,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'assigns answers of current question to @answers' do
-      answer = create(:answer, question: question)
+      answer = create(:answer, question: question, user: @user)
       expect(assigns(:answers)).to eq([answer])
     end
 

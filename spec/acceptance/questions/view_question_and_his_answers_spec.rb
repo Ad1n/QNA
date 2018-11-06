@@ -8,7 +8,7 @@ i want to be able to view question and his answers.
 
   given(:user) { create(:user) }
   given(:question) { create(:question, user_id: user.id) }
-  given(:answer) { create(:answer, question_id: question.id) }
+  given(:answer) { create(:answer, question_id: question.id, user_id: user.id) }
 
   scenario "User try to view question and his answers" do
     visit question_path(question, answer)

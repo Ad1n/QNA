@@ -1,0 +1,6 @@
+tr
+  td=answer.body
+  -if user_signed_in?
+    td= link_to 'Show', answer_path(answer)
+    td= link_to 'Edit', edit_answer_path(answer)
+    td= link_to 'Delete', answer_path(answer), method: :delete, data: { confirm: 'Are u sure ?'}

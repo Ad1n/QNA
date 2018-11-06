@@ -3,8 +3,8 @@ p=@question.body
 
 H4 List of answers:
 
--@question.answers.each do |ans|
-  p=ans.body
+table
+  =render @answers
 
 p=render "answers/new"
 

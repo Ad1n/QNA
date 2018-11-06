@@ -21,4 +21,9 @@ module AcceptanceHelpers
     click_on "Answer the question"
   end
 
+  def delete_answer(question, answer)
+    visit question_path(question, answer)
+    click_on "Delete"
+  end
+
 end
