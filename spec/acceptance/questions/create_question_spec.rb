@@ -8,6 +8,16 @@ feature 'Create question', %(
 
   given(:user) { create(:user) }
 
+  scenario "User be able to see errors in current page" do
+    sign_in(user)
+    visit questions_path
+    click_on 'Ask question'
+    click_on "Create"
+
+    expect(page).to have_content("Title can't be blank")
+    expect(page).to have_content("Body can't be blank")
+  end
+
   scenario 'Authenticated user creates question' do
     sign_in(user)
     visit questions_path
@@ -15,6 +25,8 @@ feature 'Create question', %(
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Text text'
     click_on 'Create'
+    expect(page).to have_content "Test question"
+    expect(page).to have_content "Text text"
     expect(page).to have_content "Your question successfully created."
   end
 

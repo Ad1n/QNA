@@ -1,27 +1,26 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_question, only: %i[new create show]
+  before_action :set_question, only: %i[create show]
   before_action :set_answer, only: %i[destroy]
-
-  def new
-    @answer = @question.answers.new
-  end
 
   def create
     @answer = @question.answers.new(answer_params)
-    if current_user.answers << @answer
+    @answer.user = current_user
+    if @answer.save
       redirect_to question_path(@question)
     else
-      redirect_to question_path(@question), notice: "Can not create answer."
+      @question.answers.delete(@answer)
+      @answers = @question.answers
+      render "/questions/show"
     end
   end
 
   def destroy
-    if current_user == @answer.user
+    if current_user.author_of?(@answer)
       @answer.destroy
       redirect_to question_path(@answer.question)
     else
-      redirect_to question_path(@answer.question), notice: "You are not the author of this answer."
+      redirect_to question_path(@answer.question), notice: "You are not the author of this answer"
     end
   end
 
@@ -36,6 +35,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.permit(:body)
+    params.require(:answer).permit(:body)
   end
 end

@@ -13,6 +13,8 @@ feature 'Delete question', %(
   scenario "Author of question try to delete his question" do
     sign_in(user_author)
     visit questions_path(question)
+    expect(page).to have_content(question.title)
+    expect(page).to have_content(question.body)
     click_on "Delete"
 
     expect(page).to_not have_content(question.title)
@@ -22,15 +24,13 @@ feature 'Delete question', %(
   scenario "Not an author of question try to delete question" do
     sign_in(user_not_author)
     visit questions_path(question)
-    click_on "Delete"
-
     expect(page).to have_content(question.title)
     expect(page).to have_content(question.body)
-    expect(page).to have_content("You are not the author of this question.")
+    expect(page).to_not have_link "Delete"
   end
 
   scenario "Non-authenticated user try to delete question" do
     visit questions_path(question)
-    expect(page).to_not have_selector(:link, "Delete")
+    expect(page).to_not have_link "Delete"
   end
 end

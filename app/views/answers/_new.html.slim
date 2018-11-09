@@ -1,4 +1,6 @@
-p= form_with url: question_answers_path(@question), local: true do |f|
+p= render "shared/errors", resource: @answer
+
+p= form_for @question.answers.new, url: question_answers_path(@question) do |f|
   p= f.label :body, "Write your answer: "
   p= f.text_area :body, id: :answer_body, rows: 7, col: 60
   p= f.submit 'Answer the question'

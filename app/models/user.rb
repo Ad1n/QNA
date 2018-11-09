@@ -9,4 +9,9 @@ class User < ApplicationRecord
 
   has_many :questions
   has_many :answers
+
+  def author_of?(object)
+    id == object.user.id
+  end
+
 end

@@ -1,6 +1,5 @@
-tr
-  td=answer.body
-  -if user_signed_in?
-    td= link_to 'Show', answer_path(answer)
-    td= link_to 'Edit', edit_answer_path(answer)
-    td= link_to 'Delete', answer_path(answer), method: :delete, data: { confirm: 'Are u sure ?'}
+li= answer.body
+- if user_signed_in? && current_user.author_of?(answer)
+  = link_to 'Edit', edit_question_answer_path(@question, answer)
+  = " | "
+  = link_to 'Delete', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are u sure ?' }
