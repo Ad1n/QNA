@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
     else
       @question.answers.delete(@answer)
       @answers = @question.answers
-      render "/questions/show"
+      render "questions/show"
     end
   end
 
