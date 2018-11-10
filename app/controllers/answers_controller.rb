@@ -1,20 +1,34 @@
 class AnswersController < ApplicationController
-  before_action :set_question, only: %i[new create show]
-
-  def new
-    @answer = @question.answers.new
-  end
+  before_action :authenticate_user!, except: %i[show]
+  before_action :set_question, only: %i[create show]
+  before_action :set_answer, only: %i[destroy]
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
     if @answer.save
       redirect_to question_path(@question)
     else
-      render :new
+      @question.answers.delete(@answer)
+      @answers = @question.answers
+      render "questions/show"
+    end
+  end
+
+  def destroy
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question)
+    else
+      redirect_to question_path(@answer.question), notice: "You are not the author of this answer"
     end
   end
 
   private
+
+  def set_answer
+    @answer = Answer.find(params[:id])
+  end
 
   def set_question
     @question = Question.find(params[:question_id])

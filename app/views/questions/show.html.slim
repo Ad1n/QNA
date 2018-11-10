@@ -1,0 +1,10 @@
+H1= @question.title
+p= @question.body
+
+H4 List of answers:
+
+ol= render @answers
+
+p= render "answers/new"
+
+p= link_to "Back", questions_path
