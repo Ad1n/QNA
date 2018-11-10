@@ -12,21 +12,17 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of :password }
   end
 
-  describe "#author_of?" do
+  describe '#author_of?' do
+    let(:user) { create(:user) }
+    let(:another_user) { create(:user) }
+    let(:question) { create(:question,  user: user) }
 
-    before do
-      @current_user = create(:user)
+    it 'returns true for author' do
+      expect(user).to be_author_of(question)
     end
 
-    it "return true" do
-      question = create(:question, user: @current_user)
-      expect(@current_user.author_of?(question)).to eq true
-    end
-
-    it "return false" do
-      question_author = create(:user)
-      question = create(:question, user: question_author)
-      expect(@current_user.author_of?(question)).to eq false
+    it 'returns false for non author' do
+      expect(another_user).to_not be_author_of(question)
     end
   end
 
