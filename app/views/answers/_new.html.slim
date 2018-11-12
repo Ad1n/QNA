@@ -1,6 +1,4 @@
-p= render "shared/errors", resource: @answer
-
-p= form_for [@question, Answer.new] do |f|
+p= form_for [@question, Answer.new], remote: true do |f|
   p= f.label :body, "Write your answer: "
   p= f.text_area :body, id: :answer_body, rows: 7, col: 60
   p= f.submit 'Answer the question'

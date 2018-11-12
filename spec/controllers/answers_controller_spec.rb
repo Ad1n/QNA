@@ -9,14 +9,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
 
-      it 'save the new answer in the database' do
+      it 'saves the new answer in the database' do
         expect(@user).to eq(answer.user)
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id } }.to change(question.answers, :count).by(1)
+        expect { post :create, params: { answer: attributes_for(:answer), question_id: question.id }, format: :js }.to change(question.answers, :count).by(1)
       end
 
-      it "redirect to the current question's answers" do
-        post :create, params: { answer: attributes_for(:answer), question_id: question.id }
-        expect(response).to redirect_to question_path(question)
+      it "has status code 200" do
+        post :create, params: { answer: attributes_for(:answer), question_id: question.id }, format: :js
+        expect(response.status).to eq(200)
       end
 
     end
@@ -24,12 +24,12 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
 
       it 'does not save the new answer' do
-        expect { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id } }.to_not change(Answer, :count)
+        expect { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 're-renders show view' do
-        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id }
-        expect(response).to render_template "questions/show"
+      it 'has status code 200' do
+        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question.id }, format: :js
+        expect(response.status).to eq(200)
       end
 
     end

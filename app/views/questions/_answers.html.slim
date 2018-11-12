@@ -1,0 +1,7 @@
+ol
+  - @question.answers.each do |answer|
+    li= answer.body
+    - if current_user&.author_of?(answer)
+      = link_to 'Edit', edit_question_answer_path(@question, answer)
+      = " | "
+      = link_to 'Delete', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are u sure ?' }
