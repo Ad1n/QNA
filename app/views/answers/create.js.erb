@@ -1,5 +1,7 @@
 $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
 
-$('.answers').html('<%= j render 'questions/answers' %>');
+$('.answers').append('<%= unless @answer.id.nil?
+  j render 'answers/answer', answer: @answer
+  end %>');
 
 $('#answer_body').val('');
