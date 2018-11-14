@@ -1,7 +1,7 @@
 $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
 
-$('.answers').append('<%= unless @answer.id.nil?
-  j render 'answers/answer', answer: @answer
-  end %>');
+<% if @answer.persisted? %>
+    $('.answers').append('<%= j render @answer %>');
+<% end %>
 
 $('#answer_body').val('');
