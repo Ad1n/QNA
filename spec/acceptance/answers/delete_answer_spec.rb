@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative "../acceptance_helper"
 
 feature 'Delete answer', %(
   In order to delete my answer(s) from community

@@ -1,4 +1,4 @@
-require "rails_helper"
+require_relative "../acceptance_helper"
 
 feature "View question and his answers", %(
 In order to find answer for my question
