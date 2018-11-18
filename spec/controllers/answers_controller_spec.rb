@@ -72,4 +72,51 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe "PATCH #update" do
+    sign_in_user
+
+    let!(:question) { create(:question, user: @user) }
+    let!(:answer) { create(:answer, question: question, user: @user) }
+    let!(:user2) { create(:user) }
+    let!(:answer2) { create(:answer, question: question, user: user2) }
+
+    context "Author updates answer" do
+
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'assigns the question' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context "Non-author updates answer" do
+
+      it 'doesnt change answer attributes' do
+        patch :update, params: { id: answer2, question_id: question, answer: { body: 'new body' } }, format: :js
+        answer2.reload
+        expect(answer2.body).to_not eq 'new body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer2, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+  end
+
 end

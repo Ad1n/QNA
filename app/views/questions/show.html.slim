@@ -4,7 +4,7 @@ p= @question.body
 H4 List of answers:
 
 .answers
-  = render 'answers'
+  = render @question.answers
 
 .errors
   p= render "shared/errors", resource: @answer
