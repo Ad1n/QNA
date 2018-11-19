@@ -24,9 +24,9 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to question_path(@answer.question)
-    else
-      redirect_to question_path(@answer.question), notice: "You are not the author of this answer"
+    #   redirect_to question_path(@answer.question)
+    # else
+    #   redirect_to question_path(@answer.question), notice: "You are not the author of this answer"
     end
   end
 

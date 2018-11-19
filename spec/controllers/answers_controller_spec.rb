@@ -46,12 +46,12 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'deletes answer' do
-        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question show view' do
-        delete :destroy, params: { id: answer.id, question_id: question.id }
-        expect(response).to redirect_to question_path(question)
+      it 'has status code 200' do
+        delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js
+        expect(response.status).to eq(200)
       end
     end
 
@@ -61,13 +61,13 @@ RSpec.describe AnswersController, type: :controller do
       let!(:question) { create(:question, user: user) }
       let!(:answer) { create(:answer, question: question, user: user) }
 
-      it "Non-delete answer" do
-        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to_not change(Answer, :count)
+      it "doesnt delete answer" do
+        expect { delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js }.to_not change(Answer, :count)
       end
 
-      it "Redirects to question show view" do
-        delete :destroy, params: { id: answer.id, question_id: question.id }
-        expect(response).to redirect_to question_path(question)
+      it "has status code 200" do
+        delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js
+        expect(response.status).to eq(200)
       end
     end
   end

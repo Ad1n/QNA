@@ -1,4 +1,4 @@
-ul
+ul id="answer-#{answer.id}"
   li= answer.body
   - if current_user&.author_of?(answer)
     = link_to 'Edit', "", class: "edit-answer-link", data: { answer_id: answer.id }
@@ -9,4 +9,4 @@ ul
       = f.submit "Save"
 
     = " | "
-    = link_to 'Delete', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are u sure ?' }
+    = link_to 'Delete', question_answer_path(@question, answer), remote: true, method: :delete, data: {confirm: 'Are u sure ?' }
