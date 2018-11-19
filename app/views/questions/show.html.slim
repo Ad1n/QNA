@@ -1,5 +1,18 @@
-H1= @question.title
-p= @question.body
+.errors_question
+  p= render "shared/errors", resource: @question
+
+.question
+  H1.title= @question.title
+  p.body= @question.body
+  - if current_user&.author_of?(@question)
+    p= link_to "Edit question", "", class: "edit-question-link", data: { id: @question.id }
+    p= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}" } do |f|
+      = f.label :title, "Title: "
+      = f.text_field :title
+      = f.label :body, "Question text: "
+      = f.text_area :body
+      = f.submit "Save"
+      = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
 
 H4 List of answers:
 

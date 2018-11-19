@@ -58,22 +58,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-
-    before do
-      get :edit, params: { id: question }
-    end
-
-    it 'assigns the requested question to @question' do
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
@@ -103,29 +87,43 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
 
-    context 'valid attributes' do
+    context "non-authenticated user updates question" do
+      it 'doesnt change question attributes' do
+        patch :update, params: { id: question, question: { title: "new title", body: 'new body' } }, format: :js
+        question.reload
+        expect(question.body).to_not eq 'new body'
+        expect(question.title).to_not eq 'new title'
+      end
+    end
+
+    context "as authenticated author of question with valid attributes" do
+      sign_in_user
+      let!(:question) { create(:question, user: @user) }
+
       it 'assign the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        patch :update, params: { id: question, question: { title: "New title", body: "New body" } }, format: :js
         question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
+        expect(question.title).to eq 'New title'
+        expect(question.body).to eq 'New body'
       end
 
-      it 'redirects to the updated question' do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question
+      it 'receives response status 200' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+        expect(response.status).to eq(200)
       end
     end
 
-    context 'invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
+    context "as authenticated author of question with invalid attributes" do
+      sign_in_user
+      let!(:question) { create(:question, user: @user) }
+
+      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } }, format: :js }
 
       it 'does not change question attributes' do
         question.reload
@@ -133,8 +131,40 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq nil
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 'receives response status 200' do
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "as authenticated non-author with valid attributes" do
+      sign_in_user
+
+      it 'doesnt change question attributes' do
+        patch :update, params: { id: question, question: { title: "New title", body: "New body" } }, format: :js
+        question.reload
+        expect(question.title).to_not eq 'New title'
+        expect(question.body).to_not eq 'New body'
+      end
+
+      it 'receives response status 200' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "as authenticated non-author with invalid attributes" do
+      sign_in_user
+
+      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } }, format: :js }
+
+      it 'does not change question attributes' do
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq nil
+      end
+
+      it 'receives response status 200' do
+        expect(response.status).to eq(200)
       end
     end
   end

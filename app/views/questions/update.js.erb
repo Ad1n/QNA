@@ -1,0 +1,23 @@
+<% if @question.errors.present? %>
+    $('.errors_question').html('<%= j render 'shared/errors', resource: @question %>');
+<% else %>
+    $('.title').html('<%= j @question.title %>')
+    $('.body').html('<%= j @question.body %>')
+
+    $('.question').on('click', '.edit-question-link', function(e) {
+        e.preventDefault();
+        $(this).hide();
+        question_id = $(this).data('id');
+        $("form#edit-question-" + question_id).show();
+    });
+
+    $('.question').on('click', '.edit-question-hide', function(e) {
+        e.preventDefault();
+        $(this).hide;
+        question_id = $('.edit-question-link').data('id');
+        $("form#edit-question-" + question_id).hide();
+        $('.edit-question-link').show();
+        $('.errors_question').html('');
+    });
+<% end %>
+
