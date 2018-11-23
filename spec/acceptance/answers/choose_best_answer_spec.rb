@@ -21,13 +21,8 @@ i want to be able to choose best answer for this question.
 
       within "ul#answer-#{answer_first.id}" do
         click_on "Mark as the best"
+        expect(page).to have_content("1")
       end
-      answer_first.reload
-      answer_second.reload
-      answer_third.reload
-      expect(answer_first.best_answer_id).to eq(answer_first.id)
-      expect(answer_second.best_answer_id).to eq 0
-      expect(answer_third.best_answer_id).to eq 0
     end
 
     scenario "Non-author of question try to choose best answer" do

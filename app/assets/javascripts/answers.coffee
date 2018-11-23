@@ -13,7 +13,7 @@ ready = ->
     $('ul[id^=answer]')[0].classList.add('best_answer');
 
   if $('.best_answer_id').length
-    if $('.best_answer_id')[0].innerHTML != 0 && $('.best_answer_id')[0].innerHTML != ""
+    if $('.best_answer_id')[0].innerHTML != false && $('.best_answer_id')[0].innerHTML != ""
       $('ul[id^=answer]')[0].classList.add('best_answer');
 
 

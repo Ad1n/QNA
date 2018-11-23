@@ -11,12 +11,11 @@ class AnswersController < ApplicationController
       @question.answers.delete(@answer)
       @answers = @question.answers
     end
-
   end
 
   def choose_best_answer
     if current_user.author_of?(@question)
-      @choice = BestAnswer.new(@question, @answer)
+      @choice = BestAnswer.new(@answer)
       @choice.make_choice
       redirect_to question_path(@question)
     end
