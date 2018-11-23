@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_question, only: %i[create show]
-  before_action :set_answer, only: %i[destroy update]
+  before_action :set_question, only: %i[create show choose_best_answer]
+  before_action :set_answer, only: %i[destroy update choose_best_answer]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -14,6 +14,14 @@ class AnswersController < ApplicationController
 
   end
 
+  def choose_best_answer
+    if current_user.author_of?(@question)
+      @choice = BestAnswer.new(@question, @answer)
+      @choice.make_choice
+      redirect_to question_path(@question)
+    end
+  end
+
   def update
     if current_user.author_of?(@answer)
       @question = @answer.question
@@ -24,9 +32,6 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-    #   redirect_to question_path(@answer.question)
-    # else
-    #   redirect_to question_path(@answer.question), notice: "You are not the author of this answer"
     end
   end
 

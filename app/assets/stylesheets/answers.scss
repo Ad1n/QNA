@@ -1,5 +1,13 @@
 // Place all the styles related to the Answers controller here.
-// They will automatically be included in application.css.
+// They will automatically be included in application.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .edit_answer { display: none; }
+
+.best_answer {
+  box-shadow: 0 0 5px #32cd32;
+}
+
+p.best_answer_id {
+  display: none;
+}

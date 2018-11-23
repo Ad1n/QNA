@@ -17,7 +17,7 @@
 H4 List of answers:
 
 .answers
-  = render @question.answers
+  = render @question.answers.sort_by {|answer| answer[:best_answer_id] }.reverse
 
 .errors
   p= render "shared/errors", resource: @answer

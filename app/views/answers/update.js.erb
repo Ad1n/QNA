@@ -1,7 +1,11 @@
 $('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
 
 <% if @answer.persisted? %>
-  $('.answers').html('<%= j render @question.answers %>')
+    $('.answers').html('<%= j render @question.answers.sort_by {|answer| answer[:best_answer_id] }.reverse %>')
+
+    if ($('.best_answer_id')[0].innerHTML != 0 && $('.best_answer_id')[0].innerHTML != "") {
+        $('ul[id^=answer]')[0].classList.add('best_answer');
+    }
 <% end %>
 
 $('.answers').on('click', '.edit-answer-link', function(e) {
