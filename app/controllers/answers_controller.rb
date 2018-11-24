@@ -15,8 +15,7 @@ class AnswersController < ApplicationController
 
   def choose_best_answer
     if current_user.author_of?(@question)
-      @choice = BestAnswer.new(@answer)
-      @choice.make_choice
+      @answer.make_choice
       redirect_to question_path(@question)
     end
   end

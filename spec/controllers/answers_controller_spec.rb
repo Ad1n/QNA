@@ -47,11 +47,6 @@ RSpec.describe AnswersController, type: :controller do
         answer
       end
 
-      it "assigns @choice new BestAnswer class" do
-        post :choose_best_answer, params: { id: answer.id, question_id: question.id }
-        expect(assigns(:choice)).to be_kind_of(BestAnswer)
-      end
-
       it "makes best answer" do
         post :choose_best_answer, params: { id: answer.id, question_id: question.id }
         answer.reload
@@ -71,11 +66,6 @@ RSpec.describe AnswersController, type: :controller do
       let!(:user) { create(:user) }
       let!(:question) { create(:question, user: user) }
       let!(:answer) { create(:answer, question: question, user: user) }
-
-      it "doesnt assign @choice new BestAnswer class" do
-        post :choose_best_answer, params: { id: answer.id, question_id: question.id }
-        expect(assigns(:choice)).to_not be_kind_of(BestAnswer)
-      end
 
       it "doesnt make best answer" do
         post :choose_best_answer, params: { id: answer.id, question_id: question.id }
