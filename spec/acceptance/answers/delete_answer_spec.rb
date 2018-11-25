@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative "../acceptance_helper"
 
 feature 'Delete answer', %(
   In order to delete my answer(s) from community
@@ -11,7 +11,7 @@ feature 'Delete answer', %(
   given(:question) { create(:question, user: user_author) }
   given(:answer) { create(:answer, question: question, user: user_author) }
 
-  scenario "Author of answer try to delete his answer." do
+  scenario "Author of answer try to delete his answer.", js: true do
     sign_in(user_author)
     visit question_path(question, answer)
     expect(page).to have_content(answer.body)
@@ -19,7 +19,7 @@ feature 'Delete answer', %(
     expect(page).to_not have_content(answer.body)
   end
 
-  scenario "Not an author of answer try to delete answer." do
+  scenario "Not an author of answer try to delete answer.", js: true do
     sign_in(user_not_author)
     visit question_path(question, answer)
     expect(page).to have_content(answer.body)

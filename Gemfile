@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 2.5'
 
 #UI
 gem 'jquery-rails'
+gem 'bootstrap', '~> 4.1.3'
+
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -49,9 +51,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'fuubar'
   gem 'rails-controller-testing'
-  gem 'selenium-webdriver'
   gem 'webdrivers'
   gem 'database_cleaner'
+  gem 'capybara', '>= 2.15'
+  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
 end
 
 group :development do
@@ -64,9 +67,6 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 

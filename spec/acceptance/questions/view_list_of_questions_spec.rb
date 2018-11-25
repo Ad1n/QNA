@@ -1,4 +1,4 @@
-require "rails_helper"
+require_relative "../acceptance_helper"
 
 feature "View list of questions", %(
 In order to view list of questions

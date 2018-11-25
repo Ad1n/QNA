@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
   describe '#author_of?' do
     let(:user) { create(:user) }
     let(:another_user) { create(:user) }
-    let(:question) { create(:question,  user: user) }
+    let(:question) { create(:question, user: user) }
 
     it 'returns true for author' do
       expect(user).to be_author_of(question)

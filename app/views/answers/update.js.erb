@@ -1,0 +1,16 @@
+$('.errors').html('<%= j render 'shared/errors', resource: @answer %>');
+
+<% if @answer.persisted? %>
+    $('.answers').html('<%= j render @question.answers.sort_from_best_answer %>')
+
+    if ($('.best_answer_id')[0].innerHTML != false && $('.best_answer_id')[0].innerHTML != "") {
+        $('ul[id^=answer]')[0].classList.add('best_answer');
+    }
+<% end %>
+
+$('.answers').on('click', '.edit-answer-link', function(e) {
+    e.preventDefault();
+    $(this).hide();
+    answer_id = $(this).data('answerId');
+    $("form#edit-answer-" + answer_id).show();
+});

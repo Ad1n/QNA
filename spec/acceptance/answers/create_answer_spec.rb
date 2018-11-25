@@ -1,4 +1,4 @@
-require "rails_helper"
+require_relative "../acceptance_helper"
 
 feature "Create new answer for current question", %(
 In order to help with finding answers for question

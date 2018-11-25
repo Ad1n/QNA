@@ -1,6 +1,17 @@
-ul
+ul class="card" id="answer-#{answer.id}"
+  p class="best_answer_id" = answer.best_answer_id
   li= answer.body
+  - if current_user&.author_of?(@question)
+    = link_to "Mark as the best", choose_best_answer_question_answer_path(@question, answer), class: "best-answer-link", data: { answer_id: answer.id }, method: :post
   - if current_user&.author_of?(answer)
-    = link_to 'Edit', edit_question_answer_path(@question, answer)
-    = " | "
-    = link_to 'Delete', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are u sure ?' }
+    p
+      = link_to 'Delete', question_answer_path(@question, answer), remote: true, method: :delete, data: {confirm: 'Are u sure ?' }
+      = " | "
+      = link_to 'Edit', "", class: "edit-answer-link", data: { answer_id: answer.id }
+
+      = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+        = f.label :body, "Answer"
+        = f.text_area :body
+        = f.submit "Save"
+
+
