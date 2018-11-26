@@ -14,6 +14,7 @@
 //= require activestorage
 //= require jquery3
 //= require jquery.remotipart
+//= require cocoon
 //= require turbolinks
 //= require popper
 //= require bootstrap-sprockets

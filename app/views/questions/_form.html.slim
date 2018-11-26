@@ -1,16 +1,16 @@
 = form_with model: @question, local: true do |f|
-  p
+  .field
     = f.label :title
     = f.text_field :title
-  p
+  .field
     = f.label :body
     = f.text_field :body
 
   p Attachments:
-  p
+  p id="attachments"
     =f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
-
+      = render "shared/attachment_fields", f: a
+    .links
+      = link_to_add_association 'Add file', f, :attachments, partial: "shared/attachment_fields"
 
   p= f.submit 'Create'

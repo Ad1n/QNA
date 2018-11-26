@@ -24,4 +24,19 @@ feature "Add files to answer", %(
 
     end
   end
+
+  scenario "User adds several files to answer", js: true do
+
+    fill_in 'answer_body', with: 'My text'
+
+    click_on "Add file"
+
+    inputs = all('input[type="file"]')
+    inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
+    inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
+
+    click_on 'Answer the question'
+    expect(page).to have_link 'spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb'
+  end
 end

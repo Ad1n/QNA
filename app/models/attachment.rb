@@ -1,5 +1,7 @@
 class Attachment < ApplicationRecord
-  belongs_to :attachable, polymorphic: true
+  validates :file, presence: true
+
+  belongs_to :attachable, polymorphic: true, inverse_of: :attachment
 
   mount_uploader :file, FileUploader
 end

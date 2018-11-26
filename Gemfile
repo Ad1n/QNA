@@ -49,6 +49,8 @@ gem 'carrierwave'
 
 #Create objects with adding files by AJAX
 gem 'remotipart'
+#Add several files to object
+gem 'cocoon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
