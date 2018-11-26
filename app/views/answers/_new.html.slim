@@ -1,4 +1,8 @@
-p= form_for [@question, Answer.new], remote: true do |f|
+p= form_for [@question, @answer], remote: true do |f|
   p= f.label :body, "Write your answer: "
   p= f.text_area :body, id: :answer_body, rows: 7, col: 60
+  p
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
   p= f.submit 'Answer the question'

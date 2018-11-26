@@ -47,6 +47,9 @@ gem 'devise'
 #Attach files
 gem 'carrierwave'
 
+#Create objects with adding files by AJAX
+gem 'remotipart'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

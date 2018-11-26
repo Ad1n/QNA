@@ -1,6 +1,9 @@
 ul class="card" id="answer-#{answer.id}"
   p class="best_answer_id" = answer.best_answer_id
   li= answer.body
+  .attachments Attachments:
+  - answer.attachments.each do |a|
+    li= link_to a.file.identifier, a.file.url
   - if current_user&.author_of?(@question)
     = link_to "Mark as the best", choose_best_answer_question_answer_path(@question, answer), class: "best-answer-link", data: { answer_id: answer.id }, method: :post
   - if current_user&.author_of?(answer)
