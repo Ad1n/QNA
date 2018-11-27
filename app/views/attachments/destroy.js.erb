@@ -1,0 +1,5 @@
+<% if @attachment.errors.present? %>
+  $('.errors_question').html('<%= j render 'shared/errors', resource: @attachment %>');
+<% else %>
+  $("div#attachment-<%= @attachment.id %>").remove();
+<% end %>
