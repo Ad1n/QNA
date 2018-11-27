@@ -18,12 +18,14 @@ feature 'Create question', %(
     expect(page).to have_content("Body can't be blank")
   end
 
-  scenario 'Authenticated user creates question' do
+  scenario 'Authenticated user creates question', js: true do
     sign_in(user)
     visit questions_path
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Text text'
+    click_link "Do not add file"
+
     click_on 'Create'
     expect(page).to have_content "Test question"
     expect(page).to have_content "Text text"

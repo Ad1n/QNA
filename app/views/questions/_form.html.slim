@@ -1,6 +1,17 @@
 = form_with model: @question, local: true do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_field :body
-  = f.submit 'Create'
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :body
+    = f.text_field :body
+
+  p Attachments:
+  p id="attachments"
+    =f.fields_for :attachments do |a|
+      = render "shared/attachment_fields", f: a
+      / = a.link_to 'Delete file', attachment_path(a), method: :delete, data: { confirm: 'Are u sure ?'}
+    .links
+      = link_to_add_association 'Add file', f, :attachments, partial: "shared/attachment_fields"
+
+  p= f.submit 'Create'

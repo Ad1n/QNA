@@ -7,3 +7,6 @@ config/database.yml
 **/tmp
 
 .byebug_history
+
+#Ignore uploaded files
+/public/uploads

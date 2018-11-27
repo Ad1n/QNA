@@ -1,4 +1,10 @@
-p= form_for [@question, Answer.new], remote: true do |f|
-  p= f.label :body, "Write your answer: "
-  p= f.text_area :body, id: :answer_body, rows: 7, col: 60
+p= form_for [@question, @answer], remote: true do |f|
+  .field
+    p= f.label :body, "Write your answer: "
+    p= f.text_area :body, id: :answer_body, rows: 7, col: 60
+  p id="attachments"
+    = f.fields_for :attachments do |a|
+      = render "shared/attachment_fields", f: a
+    .links
+      = link_to_add_association 'Add file', f, :attachments, partial: "shared/attachment_fields"
   p= f.submit 'Answer the question'

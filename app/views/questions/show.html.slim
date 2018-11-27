@@ -4,6 +4,16 @@
 .question
   H1.title= @question.title
   p.body= @question.body
+  p Attachments:
+  ul
+    - @question.attachments.each do |a|
+      .attachment_file id="attachment-#{a.id}"
+        li = link_to a.file.identifier, a.file.url
+        - if current_user&.author_of?(@question)
+          = link_to 'Delete file', attachment_path(a),remote: true,
+                                                      method: :delete,
+                                                      class: "text-muted links-decor",
+                                                      data: { confirm: 'Are u sure ?' }
   - if current_user&.author_of?(@question)
     p= link_to "Edit question", "", class: "edit-question-link", data: { id: @question.id }
     p= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}" } do |f|

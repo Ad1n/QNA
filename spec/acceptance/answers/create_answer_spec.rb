@@ -21,6 +21,7 @@ i want to be able to create answer.
     sign_in(user)
     visit question_path(question)
     fill_in :answer_body, with: "Test answer"
+    click_on "Do not add file"
     click_on "Answer the question"
 
     expect(current_path).to eq question_path(question)
