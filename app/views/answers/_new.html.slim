@@ -1,4 +1,4 @@
-p= form_for [@question, @answer], remote: true do |f|
+p= form_for [@question, @answer], remote: true, data: { type: :json } do |f|
   .field
     p= f.label :body, "Write your answer: "
     p= f.text_area :body, id: :answer_body, rows: 7, col: 60

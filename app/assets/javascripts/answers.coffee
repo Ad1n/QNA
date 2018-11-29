@@ -16,5 +16,14 @@ ready = ->
     if $('.best_answer_id')[0].innerHTML != false && $('.best_answer_id')[0].innerHTML != ""
       $('ul[id^=answer]')[0].classList.add('best_answer');
 
+  $('form.new_answer').bind 'ajax:success', (e) ->
+    answer = $.parseJSON(e.detail[2].response)
+    $('.answers').append(answer.body);
+
+  .bind 'ajax:error', (e) ->
+    errors = $.parseJSON(e.detail[2].responseText)
+    $.each errors, (index, value) ->
+      $('.errors').html(value);
+
 
 $(document).on('turbolinks:load', ready);
