@@ -63,6 +63,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara', '>= 2.15'
   gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+  #Create models with tables in RSpec tests
+  gem 'with_model'
 end
 
 group :development do

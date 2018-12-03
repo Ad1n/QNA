@@ -23,4 +23,17 @@ ul class="card" id="answer-#{answer.id}"
         = f.text_area :body
         = f.submit "Save"
 
+  .answer_votement
+    - unless current_user.nil? || current_user&.author_of?(answer) || answer.object_rating(current_user) == 1
+      = link_to "+", vote_question_answer_path(@question, answer), class: "answer-vote badge badge-success",
+              method: :post,
+              remote: true,
+              data: { answer_id: answer.id }
+    .answer_rating class="badge badge-light" id="answer-rating-#{answer.id}"
+      = answer.rating
+    - unless current_user.nil? || current_user&.author_of?(answer) || answer.object_rating(current_user) == -1
+      = link_to "-", unvote_question_answer_path(@question, answer), class: "answer-vote badge badge-danger",
+              method: :post,
+              remote: true,
+              data: { answer_id: answer.id }
 

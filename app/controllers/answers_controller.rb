@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: %i[show]
   before_action :set_question, only: %i[create show choose_best_answer]
   before_action :set_answer, only: %i[destroy update choose_best_answer]
@@ -12,7 +14,7 @@ class AnswersController < ApplicationController
       @answers = @question.answers
     end
 
-#Lesson 9. Get with with JSON.
+#Lesson 9. Get with with JSON. Example.
     # respond_to do |format|
     #   if @answer.save
     #     format.html { render partial: @question.answers, layout: false }
