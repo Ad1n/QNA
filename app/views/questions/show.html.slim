@@ -25,13 +25,13 @@
       = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
 
 .question_votement id="question_votement"
-  - unless current_user.nil? || current_user&.author_of?(@question) || @question.object_rating(current_user) == 1
+  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != 1
     = link_to "+", vote_question_path(@question), class: "question-vote badge badge-success",
                                                   method: :post,
                                                   remote: true
   .question_rating class="badge badge-light"
     = @question.rating
-  - unless current_user.nil? || current_user&.author_of?(@question) || @question.object_rating(current_user) == -1
+  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != -1
     = link_to "-", unvote_question_path(@question), class: "question-vote badge badge-danger",
                                                     method: :post,
                                                     remote: true

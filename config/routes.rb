@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable] do
-    resources :answers, except: :index, concerns: [:votable] do
+    resources :answers, except: :index, shallow: true, concerns: [:votable] do
       member do
-        post :choose_best_answer
+        post :choose_best
       end
     end
   end

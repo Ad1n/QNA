@@ -48,13 +48,13 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it "makes best answer" do
-        post :choose_best_answer, params: { id: answer.id, question_id: question.id }
+        post :choose_best, params: { id: answer.id }
         answer.reload
         expect(answer.best_answer_id).to_not be_nil
       end
 
       it "redirects to question answers" do
-        post :choose_best_answer, params: { id: answer.id, question_id: question.id }
+        post :choose_best, params: { id: answer.id }
         expect(response).to redirect_to question_path(question)
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer, question: question, user: user) }
 
       it "doesnt make best answer" do
-        post :choose_best_answer, params: { id: answer.id, question_id: question.id }
+        post :choose_best, params: { id: answer.id }
         answer.reload
         expect(answer.best_answer_id).to be_nil
       end

@@ -14,11 +14,11 @@ ready = ->
 
   # Question votement
   $('a.question-vote').bind 'ajax:success', (e) ->
-    votable = $.parseJSON(e.detail[2].response);
+    votable = e.detail[0];
     $('div.question_rating').html(votable.rating);
 
   .bind 'ajax:error', (e) ->
-    errors = $.parseJSON(e.detail[2].responseText)
+    errors = e.detail[0];
     $.each errors, (index, value) ->
       $('.errors_question').html(value);
 

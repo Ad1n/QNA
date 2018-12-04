@@ -2,8 +2,8 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[show]
-  before_action :set_question, only: %i[create show choose_best_answer]
-  before_action :set_answer, only: %i[destroy update choose_best_answer]
+  before_action :set_question, only: %i[create show]
+  before_action :set_answer, only: %i[destroy update choose_best]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
       @answers = @question.answers
     end
 
-#Lesson 9. Get with with JSON. Example.
+#Lesson 9. Get with JSON. Example.
     # respond_to do |format|
     #   if @answer.save
     #     format.html { render partial: @question.answers, layout: false }
@@ -28,10 +28,10 @@ class AnswersController < ApplicationController
     # end
   end
 
-  def choose_best_answer
-    if current_user.author_of?(@question)
+  def choose_best
+    if current_user.author_of?(@answer.question)
       @answer.make_choice
-      redirect_to question_path(@question)
+      redirect_to question_path(@answer.question)
     end
   end
 

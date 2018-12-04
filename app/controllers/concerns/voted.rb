@@ -6,23 +6,9 @@ module Voted
   end
 
   def vote
-    if @votable.object_rating(current_user) == -1 || @votable.object_rating(current_user) == 0
-      voted_action
-    end
-  end
-
-  def unvote
-    if @votable.object_rating(current_user) == 1 || @votable.object_rating(current_user) == 0
-      voted_action
-    end
-  end
-
-  private
-
-  def voted_action
-    unless current_user.nil?
+    if current_user && @votable.can_vote?(current_user)
       respond_to do |format|
-        if send("make_#{action_name}")
+        if @votable.make_vote(current_user)
           format.json { render json: { rating: @votable.rating } }
         else
           format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity}
@@ -31,13 +17,19 @@ module Voted
     end
   end
 
-  def make_vote
-    @vote = current_user.votes.create!(score: 1, votable: @votable)
+  def unvote
+    if current_user && @votable.can_unvote?(current_user)
+      respond_to do |format|
+        if @votable.make_unvote(current_user)
+          format.json { render json: { rating: @votable.rating } }
+        else
+          format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity}
+        end
+      end
+    end
   end
 
-  def make_unvote
-    @vote = current_user.votes.create!(score: -1, votable: @votable)
-  end
+  private
 
   def set_votable
     @votable = model_klass.find(params[:id])
