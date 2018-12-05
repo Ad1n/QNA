@@ -25,14 +25,14 @@ ul class="card" id="answer-#{answer.id}"
 
   .answer_votement
     - if user_signed_in? && !current_user&.author_of?(answer) && answer.object_rating(current_user) != 1
-      = link_to "+", vote_answer_path(answer), class: "answer-vote badge badge-success",
+      = link_to "+", polymorphic_path(answer, action: :vote), class: "answer-vote badge badge-success",
               method: :post,
               remote: true,
               data: { answer_id: answer.id }
     .answer_rating class="badge badge-light" id="answer-rating-#{answer.id}"
       = answer.rating
     - if user_signed_in? && !current_user&.author_of?(answer) && answer.object_rating(current_user) != -1
-      = link_to "-", unvote_answer_path(answer), class: "answer-vote badge badge-danger",
+      = link_to "-", polymorphic_path(answer, action: :unvote), class: "answer-vote badge badge-danger",
               method: :post,
               remote: true,
               data: { answer_id: answer.id }

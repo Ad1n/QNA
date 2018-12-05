@@ -28,24 +28,45 @@ describe "votable" do
     expect(question.object_rating(user)).to eq 1
   end
 
-  it "#can_vote?" do
-    expect(question.can_vote?(user)).to eq false
+  describe "#can_vote?(user, action_name)" do
+
+    let!(:question_without_vote) { create(:question, user: user) }
+    let!(:question_with_unvote) { create(:question, user: user) }
+    let!(:unvote) { create(:unvote, votable: question_with_unvote, user: user) }
+
+    it "returns true if conditions have been met for vote action" do
+      expect(question.can_vote?(user, "vote")).to eq false
+    end
+
+    it "returns false if conditions have not been met for vote action" do
+      expect(question_without_vote.can_vote?(user, "vote")).to eq true
+    end
+
+    it "returns true if conditions have been met for unvote action" do
+      expect(question_with_unvote.can_vote?(user, "unvote")).to eq false
+    end
+
+    it "returns false if conditions have not been met for unvote action" do
+      expect(question_without_vote.can_vote?(user, "unvote")).to eq true
+    end
   end
 
-  it "#can_unvote?" do
-    expect(question.can_unvote?(user)).to eq true
-  end
-
-  describe "Making voting" do
+  describe "#make_vote(user, action_name)" do
 
     let!(:question_without_vote) { create(:question, user: user) }
 
-    it "#make_vote(user)" do
-      expect(question_without_vote.make_vote(user)).to be_an_instance_of(Vote)
+    it "create new vote in database for vote action" do
+      expect{ question_without_vote.make_vote(user, "vote") }.to change{ Vote.count }.by(1)
+      expect(question_without_vote.object_rating(user)).to eq 1
+      expect(question_without_vote.votes.first.votable_type).to eq "Question"
+      expect(question_without_vote.votes.first.votable_id).to eq question_without_vote.id
     end
 
-    it "#make_uvote(user)" do
-      expect(question_without_vote.make_unvote(user)).to be_an_instance_of(Vote)
+    it "create new vote in database for unvote action" do
+      expect{ question_without_vote.make_vote(user, "unvote") }.to change{ Vote.count }.by(1)
+      expect(question_without_vote.object_rating(user)).to eq -1
+      expect(question_without_vote.votes.first.votable_type).to eq "Question"
+      expect(question_without_vote.votes.first.votable_id).to eq question_without_vote.id
     end
 
   end

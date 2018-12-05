@@ -14,18 +14,6 @@ class AnswersController < ApplicationController
       @answers = @question.answers
     end
 
-#Lesson 9. Get with JSON. Example.
-    # respond_to do |format|
-    #   if @answer.save
-    #     format.html { render partial: @question.answers, layout: false }
-    #     format.json { render json: @answer }
-    #   else
-    #     @question.answers.delete(@answer)
-    #     @answers = @question.answers
-    #     format.html { render plain: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
-    #     format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity}
-    #   end
-    # end
   end
 
   def choose_best

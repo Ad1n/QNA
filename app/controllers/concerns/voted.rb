@@ -6,9 +6,9 @@ module Voted
   end
 
   def vote
-    if current_user && @votable.can_vote?(current_user)
+    if current_user && @votable.can_vote?(current_user, action_name)
       respond_to do |format|
-        if @votable.make_vote(current_user)
+        if @votable.make_vote(current_user, action_name)
           format.json { render json: { rating: @votable.rating } }
         else
           format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity}
@@ -18,9 +18,9 @@ module Voted
   end
 
   def unvote
-    if current_user && @votable.can_unvote?(current_user)
+    if current_user && @votable.can_vote?(current_user, action_name)
       respond_to do |format|
-        if @votable.make_unvote(current_user)
+        if @votable.make_vote(current_user, action_name)
           format.json { render json: { rating: @votable.rating } }
         else
           format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity}

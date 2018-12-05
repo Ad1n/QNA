@@ -4,7 +4,6 @@ module Votable
 
     has_many :votes, as: :votable, dependent: :destroy
 
-    #Votement business-logic  =======================================
     def rating
       votes.sum(:score)
     end
@@ -13,21 +12,13 @@ module Votable
       votes.where(user: user).sum(:score)
     end
 
-    def can_vote?(user)
-      object_rating(user) == -1 || object_rating(user) == 0
+    def can_vote?(user, action_name)
+      action_name == "vote" ? object_rating(user) == -1 || object_rating(user) == 0 : object_rating(user) == 1 || object_rating(user) == 0
     end
 
-    def can_unvote?(user)
-      object_rating(user) == 1 || object_rating(user) == 0
+    def make_vote(user, action_name)
+      action_name == "vote" ? @vote = votes.create!(score: 1, user: user) : @vote = votes.create!(score: -1, user: user)
     end
 
-    def make_vote(user)
-      @vote = user.votes.create!(score: 1, votable: self)
-    end
-
-    def make_unvote(user)
-      @vote = user.votes.create!(score: -1, votable: self)
-    end
-    #==================================================================
   end
 end

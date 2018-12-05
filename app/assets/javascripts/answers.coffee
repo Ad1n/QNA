@@ -25,16 +25,6 @@ ready = ->
 
   checkTheBestAnswer();
 
-# Lesson 9. Example of parsing JSON from answer.
-#  $('form.new_answer').bind 'ajax:success', (e) ->
-#    answer = $.parseJSON(e.detail[2].response);
-#    $('.answers').append(answer.body);
-#
-#  .bind 'ajax:error', (e) ->
-#    errors = $.parseJSON(e.detail[2].responseText)
-#    $.each errors, (index, value) ->
-#      $('.errors').html(value);
-
   # Answers votement rating
   $('a.answer-vote').bind 'ajax:success', (e) ->
     votable = e.detail[0];
