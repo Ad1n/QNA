@@ -24,9 +24,21 @@
       = f.submit "Save"
       = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
 
+.question_votement id="question_votement"
+  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != 1
+    = link_to "+", polymorphic_path(@question, action: :vote), class: "question-vote badge badge-success",
+                                                  method: :post,
+                                                  remote: true
+  .question_rating class="badge badge-light"
+    = @question.rating
+  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != -1
+    = link_to "-", polymorphic_path(@question, action: :unvote), class: "question-vote badge badge-danger",
+                                                    method: :post,
+                                                    remote: true
+
 H4 List of answers:
 
-.answers
+.answers id="answers"
   = render @question.answers.sort_from_best_answer
 
 .errors
