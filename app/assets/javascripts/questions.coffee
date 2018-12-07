@@ -6,6 +6,8 @@ updateVotementBlock = ->
   $( "#question_votement" ).load(window.location.href + " #question_votement" );
 
 ready = ->
+  questionsTable = $('#questions-list tr:last');
+
   $('.edit-question-link').click (e) ->
     e.preventDefault();
     $(this).hide();
@@ -25,5 +27,13 @@ ready = ->
   #Update question votement block after user make vote
   $('.question_votement').on('ajax:success', updateVotementBlock);
 
+  App.cable.subscriptions.create("QuestionsChannel", {
+    connected: ->
+      console.log('Connected!')
+      @perform "follow"
+
+    received: (data) ->
+      questionsTable.after(data)
+  });
 
 $(document).on('turbolinks:load', ready);

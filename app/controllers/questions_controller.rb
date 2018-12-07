@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.all
@@ -45,6 +46,18 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast(
+      "questions",
+      ApplicationController.render_with_signed_in_user(
+        current_user,
+        partial: "questions/question",
+        locals: { question: @question }
+      )
+    )
+  end
 
   def load_question
     @question = Question.find(params[:id])

@@ -16,6 +16,10 @@
 //= require jquery.remotipart
 //= require cocoon
 //= require turbolinks
+//= require action_cable
 //= require popper
 //= require bootstrap-sprockets
 //= require_tree .
+
+var App = App || {};
+App.cable = ActionCable.createConsumer()
