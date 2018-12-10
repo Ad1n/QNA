@@ -1,0 +1,21 @@
+ul class="card" id="answer-#{@answer.id}"
+  p class="best_answer_id" = 0
+  li= @answer.body
+  .attachments Attachments:
+  - for a in @answer_attachments
+    .attachment_file id="attachment-#{a.id}"
+      li
+        a href="#{a.file.url}" Attachment #{a.id}
+
+  - if @question_user == gon.user_id
+    a href="#{Rails.root}/answers/#{@answer.id}/choose_best" data-method="post" class="best-answer-link" data-answer-id="#{@answer.id}" rel="nofollow" Mark as the best
+
+  .answer_votement
+    - if gon.user_signed_in
+      a href="#{Rails.root}/answers/#{@answer.id}/vote" data-method="post" class="answer-vote badge badge-success" data-answer-id="#{@answer.id}" rel="nofollow" data-remote="true" +
+
+    .answer_rating class="badge badge-light" id="answer-rating-#{@answer.id}"
+      = @answer_rating
+
+    - if gon.user_signed_in
+          a href="#{Rails.root}/answers/#{@answer.id}/unvote" data-method="post" class="answer-vote badge badge-danger" data-answer-id="#{@answer.id}" rel="nofollow" data-remote="true" -

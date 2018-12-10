@@ -9,6 +9,34 @@ i want to be able to create answer.
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
+  context "Multiple sessions" do
+    scenario "Answer appears on another question's page", js: true do
+      Capybara.using_session('user_answer') do
+        sign_in user
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest_answer') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user_answer') do
+        fill_in :answer_body, with: "Test answer"
+        click_on "Do not add file"
+        click_on "Answer the question"
+        within '.answers' do
+          expect(page).to have_content("Test answer")
+        end
+      end
+
+      Capybara.using_session('guest_answer') do
+        within '.answers' do
+          expect(page).to have_content("Test answer")
+        end
+      end
+    end
+  end
+
   scenario "User be able to see errors in current page", js: true do
     sign_in(user)
     visit question_path(question)
@@ -34,5 +62,7 @@ i want to be able to create answer.
     visit question_path(question)
     expect(page).to_not have_selector "Answer the question"
   end
+
+
 
 end
