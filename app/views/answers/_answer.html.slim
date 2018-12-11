@@ -11,7 +11,7 @@ ul class="card" id="answer-#{answer.id}"
                                                      class: "text-muted links-decor",
                                                      data: {confirm: 'Are u sure ?'}
   - if current_user&.author_of?(@question)
-    = link_to "Mark as the best", choose_best_answer_path(answer), class: "best-answer-link", data: { answer_id: answer.id }, method: :post
+    p= link_to "Mark as the best", choose_best_answer_path(answer), class: "best-answer-link", data: { answer_id: answer.id }, method: :post
   - if current_user&.author_of?(answer)
     p
       = link_to 'Delete', answer_path(answer), remote: true, method: :delete, data: {confirm: 'Are u sure ?' }
@@ -22,6 +22,13 @@ ul class="card" id="answer-#{answer.id}"
         = f.label :body, "Answer"
         = f.text_area :body
         = f.submit "Save"
+
+  .answer_comments
+    p Comments:
+    - if current_user
+      div class="input-group input-group-sm mb-3"
+        input type="text" class="form-control"
+      p=link_to "Send", "#"
 
   .answer_votement
     - if user_signed_in? && !current_user&.author_of?(answer) && answer.object_rating(current_user) != 1
