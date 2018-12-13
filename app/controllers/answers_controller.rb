@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_question, only: %i[create show]
@@ -9,6 +10,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
+
 
     unless @answer.save
       @question.answers.delete(@answer)

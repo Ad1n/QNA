@@ -24,6 +24,10 @@
       = f.submit "Save"
       = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
 
+.question_comments
+  =render @question.comments
+p= render "shared/new_comment", resource: @question if user_signed_in?
+
 .question_votement id="question_votement"
   - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != 1
     = link_to "+", polymorphic_path(@question, action: :vote), class: "question-vote badge badge-success",

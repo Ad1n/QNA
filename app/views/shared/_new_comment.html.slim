@@ -1,0 +1,9 @@
+- if current_user
+  div class="input-group input-group-sm mb-3 new-comment-#{resource.id}"
+    p= form_for Comment.new, url: url_for(controller: "#{resource.class.name.downcase.pluralize}",
+                                       action: :create_comment,
+                                       id: resource.id),
+                                       remote: true do |f|
+      = f.label :body, "New comment: "
+      p= f.text_field :body, class: "form-control"
+      = f.submit "Send"

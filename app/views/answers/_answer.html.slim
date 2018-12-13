@@ -23,12 +23,9 @@ ul class="card" id="answer-#{answer.id}"
         = f.text_area :body
         = f.submit "Save"
 
-  .answer_comments
-    p Comments:
-    - if current_user
-      div class="input-group input-group-sm mb-3"
-        input type="text" class="form-control"
-      p=link_to "Send", "#"
+  .answer_comments id="answer-comments-#{answer.id}"
+    = render answer.comments
+  p= render "shared/new_comment", resource: answer if user_signed_in?
 
   .answer_votement
     - if user_signed_in? && !current_user&.author_of?(answer) && answer.object_rating(current_user) != 1

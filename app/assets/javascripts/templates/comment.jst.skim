@@ -1,0 +1,3 @@
+.comment_text
+  .comment_new New comment !
+  = @comment.body

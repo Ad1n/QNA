@@ -1,0 +1,45 @@
+.question_comments {
+
+  border-top: 1px solid #eff0f1;
+
+  .comment_text {
+    font-size: 13px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-bottom: 1px solid #eff0f1;
+  }
+
+  .comment_date {
+    font-size: 8px;
+    color: #666666;
+  }
+
+  .comment_new {
+    font-size: 8px;
+    color: limegreen;
+  }
+
+}
+
+.answer_comments {
+
+  border-top: 1px solid #eff0f1;
+
+  .comment_text {
+    font-size: 13px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-bottom: 1px solid #eff0f1;
+  }
+
+  .comment_date {
+    font-size: 8px;
+    color: #666666;
+  }
+
+  .comment_new {
+    font-size: 8px;
+    color: limegreen;
+  }
+
+}

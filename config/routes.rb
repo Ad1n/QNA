@@ -9,8 +9,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:votable] do
-    resources :answers, except: :index, shallow: true, concerns: [:votable] do
+  concern :commentable do
+    member do
+      post :create_comment
+    end
+  end
+
+  resources :questions, concerns: [:votable, :commentable] do
+    resources :answers, except: :index, shallow: true, concerns: [:votable, :commentable] do
       member do
         post :choose_best
       end
