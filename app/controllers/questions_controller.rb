@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
-  include Commented
+  # include Commented
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
@@ -11,6 +11,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    gon.question_id = @question.id
     @answer = @question.answers.build
     @answer.attachments.build
   end

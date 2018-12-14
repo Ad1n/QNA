@@ -6,7 +6,7 @@ class CommentsChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def follow
-    stream_from "comments"
+  def follow(params)
+    stream_from "Comments-questionRoom: #{params["question_room"]}"
   end
 end

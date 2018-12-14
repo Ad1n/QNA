@@ -7,7 +7,9 @@ i want to be able to create comment for question.
 ) do
 
   given(:user) { create(:user) }
+  given(:second_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given(:another_question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   context "Non-authenticated user" do
@@ -35,6 +37,9 @@ i want to be able to create comment for question.
   end
 
   context "Multiple sessions" do
+
+    before { another_question }
+
     scenario "Answer's comment appears on another answer's page", js: true do
       Capybara.using_session('user') do
         sign_in user
@@ -60,6 +65,42 @@ i want to be able to create comment for question.
         end
       end
 
+    end
+
+    scenario "Answer's comment appears on another answer's page only for current question", js: true do
+
+      Capybara.using_session('user') do
+        sign_in user
+        visit question_path(question)
+      end
+
+      Capybara.using_session('second_user') do
+        sign_in second_user
+        visit question_path(another_question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within "#answer-#{answer.id}" do
+          fill_in :comment_body, with: "Test comment"
+          click_on "Send"
+
+          expect(page).to have_content "Test comment"
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within "#answer-#{answer.id}" do
+          expect(page).to have_content "Test comment"
+        end
+      end
+
+      Capybara.using_session('second_user') do
+        expect(page).to_not have_content "Test comment"
+      end
     end
   end
 end

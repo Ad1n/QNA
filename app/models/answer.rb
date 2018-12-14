@@ -18,4 +18,5 @@ class Answer < ApplicationRecord
       update!(best_answer_id: true)
     end
   end
+
 end

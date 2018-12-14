@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'comments/new'
+  get 'comments/create'
   devise_for :users
   root to: "questions#index"
 
@@ -9,17 +11,14 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :commentable do
-    member do
-      post :create_comment
-    end
-  end
-
-  resources :questions, concerns: [:votable, :commentable] do
-    resources :answers, except: :index, shallow: true, concerns: [:votable, :commentable] do
+  resources :questions, concerns: [:votable] do
+    resources :comments
+    resources :answers, except: :index, shallow: true, concerns: [:votable] do
       member do
         post :choose_best
       end
+
+      resources :comments
     end
   end
 
