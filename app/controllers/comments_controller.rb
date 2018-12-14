@@ -22,17 +22,26 @@ class CommentsController < ApplicationController
 
   def broadcast_comments
     return if @comment.errors.any?
-    ActionCable.server.broadcast "Comments-questionRoom: #{@question_room}", comment: @comment
+    ActionCable.server.broadcast "questions/#{@question_id}/comments", comment: @comment
   end
 
   def set_commentable
-    if params[:question_id]
-      @commentable = Question.find(params[:question_id])
-      @question_room = params[:question_id]
-    elsif params[:answer_id]
-      @commentable = Answer.find(params[:answer_id])
-      @question_room = @commentable.question.id
+    @commentable = find_commentable
+  end
+
+  def find_commentable
+    params.each do |name, value|
+      if name =~ /(.+)_id$/
+        @commentable = $1.classify.constantize.find(value)
+        @question_id = set_question_id(@commentable)
+        return @commentable
+      end
     end
+    nil
+  end
+
+  def set_question_id(klass)
+    klass.respond_to?(:question) ? klass.question.id : klass.id
   end
 
   def comments_params

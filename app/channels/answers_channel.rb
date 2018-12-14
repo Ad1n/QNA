@@ -7,7 +7,7 @@ class AnswersChannel < ApplicationCable::Channel
   end
 
   def follow(params)
-    stream_from "question_#{params["id"]}: answers"
+    stream_from "questions/#{params["id"]}/answers"
   end
 
 end

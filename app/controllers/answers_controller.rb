@@ -43,7 +43,7 @@ class AnswersController < ApplicationController
 
   def broadcast_answer
     return if @answer.errors.any?
-    ActionCable.server.broadcast "question_#{@answer.question.id}: answers", {
+    ActionCable.server.broadcast "questions/#{@answer.question.id}/answers", {
         answer: @answer,
         answer_attachments: @answer.attachments,
         question_user: @question.user_id,

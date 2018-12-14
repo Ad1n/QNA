@@ -2,7 +2,7 @@ ready = ->
   App.cable.subscriptions.create("CommentsChannel", {
     connected: ->
       console.log(gon)
-      @perform "follow", question_room: gon.question_id
+      @perform "follow", question_id: gon.question_id
 
     received: (data) ->
       if data['comment']['commentable_type'] == "Question"
