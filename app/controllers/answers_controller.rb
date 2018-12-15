@@ -1,22 +1,17 @@
 class AnswersController < ApplicationController
   include Voted
-  # include Commented
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_question, only: %i[create show]
   before_action :set_answer, only: %i[destroy update choose_best]
   after_action :broadcast_answer, only: %i[create]
 
+  respond_to :js
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-
-
-    unless @answer.save
-      @question.answers.delete(@answer)
-      @answers = @question.answers
-    end
-
+    respond_with(@question, @answer.save)
   end
 
   def choose_best
@@ -28,14 +23,14 @@ class AnswersController < ApplicationController
 
   def update
     if current_user.author_of?(@answer)
-      @question = @answer.question
       @answer.update(answer_params)
+      respond_with(@question = @answer.question, @answer)
     end
   end
 
   def destroy
     if current_user.author_of?(@answer)
-      @answer.destroy
+      respond_with(@answer.destroy)
     end
   end
 

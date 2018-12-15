@@ -3,7 +3,7 @@ p= form_for [@question, @answer], remote: true, data: { type: :json } do |f|
     p= f.label :body, "Write your answer: "
     p= f.text_area :body, id: :answer_body, rows: 7, col: 60
   p id="attachments"
-    = f.fields_for :attachments do |a|
+    = f.fields_for :attachments, @answer.attachments.build do |a|
       = render "shared/attachment_fields", f: a
     .links
       = link_to_add_association 'Add file', f, :attachments, partial: "shared/attachment_fields"

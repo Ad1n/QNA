@@ -7,7 +7,7 @@ module AcceptanceHelpers
   end
 
   def view_question_list(questions)
-    visit questions_path(questions)
+    visit questions_path
 
     questions.each do |question|
       expect(page).to have_content(question.title)
