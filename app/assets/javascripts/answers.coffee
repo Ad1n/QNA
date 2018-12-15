@@ -39,5 +39,22 @@ ready = ->
   #Update answer votement block after user make vote
   $('.answers').on('ajax:success', updateAnswerVotementBlock);
 
+  App.cable.subscriptions.create("AnswersChannel", {
+    connected: ->
+      console.log("Answer connect")
+      @perform "follow", id: gon.question_id
+
+    received: (data) ->
+      if gon.user_id != data['answer'].user_id
+        $("#answers").append JST['templates/answer']({
+          answer: data['answer'],
+          answer_attachments: data['answer_attachments'],
+          question_user: data['question_user'],
+          answer_rating: data['answer_rating']
+        })
+  });
+
 
 $(document).on('turbolinks:load', ready);
+
+

@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
   include Votable
+  include Commentable
 
   belongs_to :question
   belongs_to :user
@@ -17,4 +18,5 @@ class Answer < ApplicationRecord
       update!(best_answer_id: true)
     end
   end
+
 end

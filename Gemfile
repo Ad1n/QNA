@@ -47,10 +47,17 @@ gem 'devise'
 #Attach files
 gem 'carrierwave'
 
-#Create objects with adding files by AJAX
+# Create objects with adding files by AJAX
 gem 'remotipart'
-#Add several files to object
+# Add several files to object
 gem 'cocoon'
+
+# Templates for client side
+gem 'skim'
+gem 'sprockets', '>= 3.7.0'
+
+# Get instance variable to JS template
+gem 'gon'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -63,6 +70,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara', '>= 2.15'
   gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+
   #Create models with tables in RSpec tests
   gem 'with_model'
 end

@@ -1,13 +1,16 @@
 class AnswersController < ApplicationController
   include Voted
+  # include Commented
 
   before_action :authenticate_user!, except: %i[show]
   before_action :set_question, only: %i[create show]
   before_action :set_answer, only: %i[destroy update choose_best]
+  after_action :broadcast_answer, only: %i[create]
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
+
 
     unless @answer.save
       @question.answers.delete(@answer)
@@ -37,6 +40,17 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def broadcast_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast "questions/#{@answer.question.id}/answers", {
+        answer: @answer,
+        answer_attachments: @answer.attachments,
+        question_user: @question.user_id,
+        answer_rating: @answer.rating,
+        question_id: @question.id
+    }
+  end
 
   def set_answer
     @answer = Answer.find(params[:id])
