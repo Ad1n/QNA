@@ -1,53 +1,53 @@
 class QuestionsController < ApplicationController
   include Voted
-  # include Commented
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+  before_action :build_answer, only: %i[show]
   after_action :publish_question, only: %i[create]
 
+  respond_to :html, :js
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
     gon.question_id = @question.id
-    @answer = @question.answers.build
-    @answer.attachments.build
+    respond_with(@question)
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit; end
 
   def create
-    @question = current_user.questions.new(question_params)
-    if @question.save
-      redirect_to @question, notice: "Your question successfully created."
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     if current_user.author_of?(@question)
       @question.update(question_params)
+      respond_with @question
     end
   end
 
   def destroy
+
     if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path
+      respond_with(@question.destroy)
     else
       redirect_to questions_path, notice: "You are not the author of this question"
     end
   end
 
   private
+
+  def build_answer
+    @answer = @question.answers.build
+  end
 
   def publish_question
     return if @question.errors.any?
