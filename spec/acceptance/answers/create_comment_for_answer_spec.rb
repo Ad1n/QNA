@@ -12,9 +12,13 @@ i want to be able to create comment for question.
   given(:another_question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
+  before {
+    user.confirm
+    second_user.confirm
+  }
+
   context "Non-authenticated user" do
     scenario "try to create comment for answer" do
-      sign_in(user)
       visit question_path(question)
 
       expect(page).to_not have_content "Send"

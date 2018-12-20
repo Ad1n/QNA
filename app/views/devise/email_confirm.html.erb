@@ -1,0 +1,38 @@
+<h2> Email authorization </h2>
+
+<h5> Please print your mail for authorize.</h5>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="password-checker">
+    <div class="field pass-check">
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "off", id: 'passCheck' %>
+    </div>
+
+    <div class="field conf-pass-check">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off", id: 'confPassCheck', class: 'passwordCheck' %>
+    </div>
+  </div>
+
+  <%= hidden_field :uid, uid %>
+  <%= hidden_field :provider, provider %>
+
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

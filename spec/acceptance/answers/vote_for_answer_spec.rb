@@ -12,6 +12,11 @@ i want to be able to vote for answer.
   given(:answer_author) { create(:answer, question: question, user: user) }
   given(:answer_non_author) { create(:answer, question: question, user: user_non_author) }
 
+  before {
+    user.confirm
+    user_non_author.confirm
+  }
+
   describe "Author of answer" do
 
     before { answer_author }

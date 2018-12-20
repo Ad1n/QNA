@@ -11,6 +11,11 @@ i want to be able to create answer.
   given(:second_user) { create(:user) }
   given(:another_question) { create(:question, user: user) }
 
+  before {
+    user.confirm
+    second_user.confirm
+  }
+
   context "Multiple sessions" do
 
     before { another_question }

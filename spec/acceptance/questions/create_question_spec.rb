@@ -8,6 +8,10 @@ feature 'Create question', %(
 
   given(:user) { create(:user) }
 
+  before {
+    user.confirm
+  }
+
   scenario "User be able to see errors in current page" do
     sign_in(user)
     visit questions_path

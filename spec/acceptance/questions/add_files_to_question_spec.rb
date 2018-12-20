@@ -9,6 +9,7 @@ feature "Add files to question", %q(
   given(:user) { create(:user) }
 
   background do
+    user.confirm
     sign_in(user)
     visit new_question_path
   end
