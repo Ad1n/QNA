@@ -33,7 +33,7 @@ feature "Authorizes with app", %(
       click_link "Sign in with GitHub"
       expect(page).to have_content("test_git@user.com")
       expect(page).to have_content("Log out")
-      expect(page).to have_content "Successfully authenticated from GitHub account."
+      expect(page).to have_content "Successfully authenticated from github account."
     end
 
     it "can handle authentication error" do
@@ -62,7 +62,7 @@ feature "Authorizes with app", %(
 
       expect(page).to have_content("test_shevtsovav@bk.ru")
       expect(page).to have_content("Log out")
-      expect(page).to have_content "Successfully authenticated from Vkontakte account."
+      expect(page).to have_content "Successfully authenticated from vkontakte account."
     end
 
     it "can handle authentication error" do
