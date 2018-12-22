@@ -12,13 +12,17 @@ class User < ApplicationRecord
   has_many :questions
   has_many :answers
   has_many :votes
-  has_many :authorizations
+  has_many :authorizations, dependent: :destroy
 
   def author_of?(object)
     id == object.user_id
   end
 
   def self.find_for_oauth(auth)
+    # if auth.nil?
+    #   return [:invalid_credentials, action_name.to_sym]
+    # end
+
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 

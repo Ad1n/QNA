@@ -1,19 +1,23 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  before_action :sign_in_with_app, only: %i[vkontakte github]
 
   def vkontakte
-    sign_in_with_app
+    # sign_in_with_app
   end
 
   def github
-    sign_in_with_app
+    # sign_in_with_app
   end
 
   private
 
   def sign_in_with_app
     auth = request.env['omniauth.auth']
+    @user = User.find_for_oauth(auth)
+    # if @user[0] == :invalid_credentials
+    #   return redirect_to new_user_registration_url, notice: "Could not authenticate you from #{@user[1]} because 'Invalid credentials'."
+    # end
 
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: auth.provider) if is_navigational_format?

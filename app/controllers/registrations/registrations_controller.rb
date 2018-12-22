@@ -5,10 +5,9 @@ class Registrations::RegistrationsController < Devise::RegistrationsController
   protected
 
   def build_resource(hash = {})
-    self.resource = resource_class.new_with_session(hash, session)
+    super
     if params.keys.include?("provider")
-      self.resource.save
-      self.resource.authorizations.create!(provider: params[:provider].keys[0], uid: params[:uid].keys[0])
+      self.resource.authorizations.build(provider: params[:provider].keys[0], uid: params[:uid].keys[0])
     end
   end
 

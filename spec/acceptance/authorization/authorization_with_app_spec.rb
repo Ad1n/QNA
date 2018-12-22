@@ -38,6 +38,7 @@ feature "Authorizes with app", %(
 
     it "can handle authentication error" do
       OmniAuth.config.mock_auth[:github] = :invalid_credentials
+
       visit new_user_registration_path
       expect(page).to have_content("Sign in with GitHub")
       click_link "Sign in with GitHub"
@@ -46,7 +47,10 @@ feature "Authorizes with app", %(
 
   end
 
+
+
   context "with email" do
+
     it "can sign up and sign in user with VK account" do
       clear_emails
 
@@ -67,6 +71,7 @@ feature "Authorizes with app", %(
 
     it "can handle authentication error" do
       OmniAuth.config.mock_auth[:vkontakte] = :invalid_credentials
+
       visit new_user_registration_path
       expect(page).to have_content("Sign in with Vkontakte")
       click_link "Sign in with Vkontakte"
