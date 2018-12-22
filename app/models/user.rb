@@ -19,15 +19,10 @@ class User < ApplicationRecord
   end
 
   def self.find_for_oauth(auth)
-    # if auth.nil?
-    #   return [:invalid_credentials, action_name.to_sym]
-    # end
-
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
     email = auth.info[:email]
-
     return User.new unless email
 
     user = User.where(email: email).first
