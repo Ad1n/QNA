@@ -10,6 +10,11 @@ feature 'Delete question', %(
   given(:user_not_author) { create(:user) }
   given!(:question) { create(:question, user_id: user_author.id) }
 
+  before {
+    user_author.confirm
+    user_not_author.confirm
+  }
+
   scenario "Author of question try to delete his question" do
     sign_in(user_author)
     visit questions_path

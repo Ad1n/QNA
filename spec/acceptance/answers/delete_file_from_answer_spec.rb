@@ -12,6 +12,11 @@ feature "Delete file from answer", %q(
   given!(:answer) { create(:answer, user: user, question: question) }
   given!(:attachment) { create(:attachment, attachable: answer) }
 
+  before {
+    user.confirm
+    user_non_author.confirm
+  }
+
   describe "Non-authenticated user" do
     scenario "doesnt see link for file delete", js: true do
       visit question_path(question)

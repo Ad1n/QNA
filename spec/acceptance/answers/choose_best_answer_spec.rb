@@ -13,6 +13,11 @@ i want to be able to choose best answer for this question.
   given!(:answer_second) { create(:answer, question: question, user: user_author) }
   given!(:answer_third) { create(:answer, question: question, user: user_author) }
 
+  before {
+    user_author.confirm
+    user_non_author.confirm
+  }
+
   describe "Authenticated user" do
 
     scenario "Author of question try to choose best answer" do

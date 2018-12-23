@@ -10,6 +10,7 @@ feature "Add files to answer", %(
   given(:question) { create(:question, user: user) }
 
   background do
+    user.confirm
     sign_in(user)
     visit question_path(question)
   end

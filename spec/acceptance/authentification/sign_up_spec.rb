@@ -9,16 +9,21 @@ I want to be able to sign up.
   given(:user) { create(:user) }
 
   scenario "Non-signed up user try to sign up" do
+    clear_emails
     visit new_user_registration_path
-    fill_in "Email", with: "testuser@test.com"
+    fill_in "Email", with: "test@example.com"
     fill_in "Password", with: "12345678"
     fill_in "Password confirmation", with: "12345678"
     click_button "Sign up"
 
-    expect(page).to have_content("You have signed up successfully.")
+    open_email('test@example.com')
+    current_email.click_link "Confirm my account"
+
+    expect(page).to have_content("Your email address has been successfully confirmed")
   end
 
   scenario "Signed up user try to sign up" do
+    user.confirm
     visit new_user_registration_path
     fill_in "Email", with: user.email
     fill_in "Password", with: user.encrypted_password

@@ -8,6 +8,10 @@ feature "User sign in", %(
 
   given(:user) { create :user }
 
+  before {
+    user.confirm
+  }
+
   scenario "Registered user try to sign in" do
     sign_in(user)
 

@@ -13,6 +13,11 @@ feature 'Answer editing', %(
   given(:user2) { create(:user) }
   given!(:answer2) { create(:answer, question: question, user: user2) }
 
+  before {
+    user.confirm
+    user2.confirm
+  }
+
   scenario "Non-authenticated user try to edit answer" do
     visit question_path(question)
 

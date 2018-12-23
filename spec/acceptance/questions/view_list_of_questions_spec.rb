@@ -9,6 +9,10 @@ i want to be able to view list of questions.
   given(:user) { create(:user) }
   given(:questions) { create_list(:question, 3, user_id: user.id) }
 
+  before {
+    user.confirm
+  }
+
   scenario "Non-authenticated user view list of all questions" do
     view_question_list(questions)
   end

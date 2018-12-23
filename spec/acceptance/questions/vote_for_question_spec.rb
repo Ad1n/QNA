@@ -11,6 +11,11 @@ i want to be able to vote for question.
   given!(:question_author) { create(:question, user: user) }
   given!(:question_non_author) { create(:question, user: user_non_author) }
 
+  before {
+    user.confirm
+    user_non_author.confirm
+  }
+
   describe "Author of question" do
     scenario "Authenticated user try to vote for question" do
       sign_in(user)

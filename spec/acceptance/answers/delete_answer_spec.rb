@@ -11,6 +11,11 @@ feature 'Delete answer', %(
   given!(:question) { create(:question, user: user_author) }
   given!(:answer) { create(:answer, question: question, user: user_author) }
 
+  before {
+    user_author.confirm
+    user_not_author.confirm
+  }
+
   scenario "Author of answer try to delete his answer.", js: true do
     sign_in(user_author)
     visit question_path(question)

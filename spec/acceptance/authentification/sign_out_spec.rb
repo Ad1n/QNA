@@ -7,6 +7,10 @@ I want to be able to sign out.
 ) do
   given(:user) { create(:user) }
 
+  before {
+    user.confirm
+  }
+
   scenario "Signed in user try to sign out" do
     sign_in(user)
     click_on "Log out"

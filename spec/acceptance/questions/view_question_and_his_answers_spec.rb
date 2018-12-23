@@ -10,6 +10,10 @@ i want to be able to view question and his answers.
   given!(:question) { create(:question, user: user) }
   given!(:answers) { create_list(:answer, 3, question: question, user: user) }
 
+  before {
+    user.confirm
+  }
+
   scenario "User try to view question and his answers" do
     visit question_path(question)
     expect(page).to have_content(question.title)

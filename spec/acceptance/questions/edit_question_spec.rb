@@ -12,6 +12,11 @@ feature 'Question editing', %(
   given(:user2) { create(:user) }
   given!(:question2) { create(:question, user: user2) }
 
+  before {
+    user.confirm
+    user2.confirm
+  }
+
   scenario "Non-authenticated user try to edit question" do
     visit question_path(question)
 

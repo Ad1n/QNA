@@ -9,6 +9,10 @@ i want to be able to create comment for question.
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
+  before {
+    user.confirm
+  }
+
   context "Non-authenticated user" do
     scenario "try to create comment for question" do
       sign_in(user)
