@@ -20,10 +20,14 @@ describe ApplicationController, type: :controller do
   controller WithVotables do
     include Voted
 
+    skip_authorization_check only: :create
+
     def create
       @test = WithVotable.create(title: "title", body: "body")
       @test.save
     end
+
+    private
 
     def question_params
       params.require(:test).permit(:title, :body)

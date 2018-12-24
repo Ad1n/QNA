@@ -2,10 +2,10 @@ class AttachmentsController < ApplicationController
 
   before_action :set_attachment, only: %i[destroy]
 
+  authorize_resource
+
   def destroy
-    if current_user.author_of?(@attachment.attachable)
-      @attachment.destroy
-    end
+    @attachment.destroy
   end
 
   private
