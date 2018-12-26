@@ -22,7 +22,11 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    respond_to do |format|
+      format.html { redirect_to root_url, alert: exception.message }
+      format.json { render json: { status: 403, message: exception } }
+      format.js { render "shared/403", status: 403, message: exception }
+    end
   end
 
   check_authorization unless: :devise_controller?

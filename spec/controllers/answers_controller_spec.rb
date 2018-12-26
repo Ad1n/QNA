@@ -105,9 +105,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js }.to_not change(Answer, :count)
       end
 
-      it "has status code 302" do
+      it "has status code 403" do
         delete :destroy, params: { id: answer.id, question_id: question.id }, format: :js
-        expect(response.status).to eq(302)
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -152,9 +152,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer2.body).to_not eq 'new body'
       end
 
-      it 'has status code 302' do
+      it 'has status code 403' do
         patch :update, params: { id: answer2, question_id: question, answer: attributes_for(:answer) }, format: :js
-        expect(response.status).to eq(302)
+        expect(response.status).to eq(403)
       end
     end
   end

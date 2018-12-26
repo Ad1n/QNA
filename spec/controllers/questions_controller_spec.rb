@@ -145,9 +145,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq 'New body'
       end
 
-      it 'receives response status 302' do
+      it 'receives response status 403' do
         patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response.status).to eq(302)
+        expect(response.status).to eq(403)
       end
     end
 
@@ -162,8 +162,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq nil
       end
 
-      it 'receives response status 302' do
-        expect(response.status).to eq(302)
+      it 'receives response status 403' do
+        expect(response.status).to eq(403)
       end
     end
   end

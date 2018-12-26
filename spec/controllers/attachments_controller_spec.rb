@@ -39,9 +39,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect { delete :destroy, params: { id: non_author_attachment }, format: :js }.to_not change(non_author_question.attachments, :count)
       end
 
-      it "responds status code 302" do
+      it "responds status code 403" do
         delete :destroy, params: { id: non_author_attachment }, format: :js
-        expect(response.status).to eq(302)
+        expect(response.status).to eq(403)
       end
     end
   end
