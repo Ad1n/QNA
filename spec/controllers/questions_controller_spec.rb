@@ -145,9 +145,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq 'New body'
       end
 
-      it 'receives response status 200' do
+      it 'receives response status 403' do
         patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(403)
       end
     end
 
@@ -162,8 +162,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to_not eq nil
       end
 
-      it 'receives response status 200' do
-        expect(response.status).to eq(200)
+      it 'receives response status 403' do
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -174,9 +174,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context "Author delete question" do
 
-      let(:question) { create(:question, user_id: @user.id) }
-
-      before { question }
+      let!(:question) { create(:question, user: @user) }
 
       it 'deletes question' do
         expect { delete :destroy, params: { id: question } }.to change(@user.questions, :count).by(-1)
@@ -198,7 +196,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirects to index view' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
 
     end

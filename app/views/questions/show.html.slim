@@ -14,7 +14,7 @@
                                                       method: :delete,
                                                       class: "text-muted links-decor",
                                                       data: { confirm: 'Are u sure ?' }
-  - if current_user&.author_of?(@question)
+  - if can?(:edit, @question)
     p= link_to "Edit question", "", class: "edit-question-link", data: { id: @question.id }
     p= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}" } do |f|
       = f.label :title, "Title: "
@@ -29,13 +29,13 @@
 p= render "shared/new_comment", resource: @question if user_signed_in?
 
 .question_votement id="question_votement"
-  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != 1
+  - if can?(:vote, @question)
     = link_to "+", polymorphic_path(@question, action: :vote), class: "question-vote badge badge-success",
                                                   method: :post,
                                                   remote: true
   .question_rating class="badge badge-light"
     = @question.rating
-  - if user_signed_in? && !current_user&.author_of?(@question) && @question.object_rating(current_user) != -1
+  - if can?(:unvote, @question)
     = link_to "-", polymorphic_path(@question, action: :unvote), class: "question-vote badge badge-danger",
                                                     method: :post,
                                                     remote: true
