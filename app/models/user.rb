@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations, dependent: :destroy
 
+  scope :all_except, ->(user) { where.not(id: user) }
+
   def author_of?(object)
     id == object.user_id
   end

@@ -70,6 +70,9 @@ gem 'omniauth-github'
 # Rails authorization
 gem 'cancancan'
 
+# Oauth provider maker
+gem 'doorkeeper', '4.2.6'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -104,6 +107,7 @@ group :test do
   gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'rails-controller-testing' # If you are using Rails 5.x
   gem 'launchy'
+  gem 'json_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
