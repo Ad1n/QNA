@@ -21,9 +21,7 @@ feature "Authorizes with app", %(
       fill_in "user[email]", with: "test_git@user.com"
       fill_in "user[password]", with: "12345678"
       fill_in "user[password_confirmation]", with: "12345678"
-      within ".actions" do
-        click_on "Sign up"
-      end
+      click_on "Update"
 
       open_email('test_git@user.com')
       current_email.click_link "Confirm my account"
