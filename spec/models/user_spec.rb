@@ -43,9 +43,10 @@ RSpec.describe User, type: :model do
 
       context "App do not return user's email" do
         let(:auth) { OmniAuth::AuthHash.new(provider: "github", uid: "123456", info: { email: nil }) }
+        let(:created_user) { create(:user) }
 
-        it "returns new user object" do
-          expect(User.find_for_oauth(auth)).to be_a(User)
+        it "returns created default user" do
+          expect(User.find_for_oauth(auth, created_user)).to eq created_user
         end
       end
 
