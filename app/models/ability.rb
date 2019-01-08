@@ -42,5 +42,8 @@ class Ability
       @user.author_of?(attachment.attachable)
     end
 
+    can :me, User, user_id: @user.id
+    cannot :index, User
+
   end
 end
