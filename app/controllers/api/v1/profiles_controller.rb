@@ -1,8 +1,6 @@
 class Api::V1::ProfilesController < ApplicationController
-
   before_action :doorkeeper_authorize!
 
-  # skip_authorization_check :me, :all
   authorize_resource class: "User"
   respond_to :json
 
@@ -10,7 +8,7 @@ class Api::V1::ProfilesController < ApplicationController
     respond_with current_resource_owner
   end
 
-  def all
+  def index
     respond_with all_users
   end
 

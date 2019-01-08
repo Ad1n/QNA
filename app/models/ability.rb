@@ -43,7 +43,7 @@ class Ability
     end
 
     can :me, User, user_id: @user.id
-    cannot :all, User
+    cannot :index, User
 
   end
 end

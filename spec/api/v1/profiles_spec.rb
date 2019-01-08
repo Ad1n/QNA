@@ -42,15 +42,15 @@ RSpec.describe "Profiles API" do
     end
   end
 
-  describe "GET /all" do
+  describe "GET /index" do
     context "unauthorized" do
       it "returns 401 status if there is no access_token" do
-        get "/api/v1/profiles/all", params: { format: :json }
+        get "/api/v1/profiles", params: { format: :json }
         expect(response.status).to eq 401
       end
 
       it "returns 401 status if  invalid access_token" do
-        get "/api/v1/profiles/all", params: { format: :json, access_token: "123" }
+        get "/api/v1/profiles", params: { format: :json, access_token: "123" }
         expect(response.status).to eq 401
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe "Profiles API" do
 
         before {
           allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
-          get "/api/v1/profiles/all", params: { format: :json, access_token: access_token_admin.token }
+          get "/api/v1/profiles", params: { format: :json, access_token: access_token_admin.token }
         }
 
         it "returns 200 status code" do
@@ -83,7 +83,10 @@ RSpec.describe "Profiles API" do
         let(:me) { create(:user) }
         let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-        before { get "/api/v1/profiles/all", params: { format: :json, access_token: access_token.token } }
+        before {
+          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(me)
+          get "/api/v1/profiles", params: { format: :json, access_token: access_token.token }
+        }
 
         it "return 403 status" do
           expect(JSON.parse(response.body)["status"]).to eq 403

@@ -34,7 +34,7 @@ describe Ability do
     let(:other_attachment) { create(:attachment, attachable: question_other) }
 
     it { should be_able_to :me, User, user: user }
-    it { should_not be_able_to :all, User }
+    it { should_not be_able_to :index, User }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
