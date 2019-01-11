@@ -8,9 +8,9 @@ feature "Authorizes with app", %(
 
   context "without email" do
 
-    before {
+    before do
       clear_emails
-    }
+    end
 
     scenario "can sign up and sign in user with GitHub account" do
 

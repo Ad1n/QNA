@@ -21,9 +21,9 @@ RSpec.describe "Questions API" do
       let(:question) { questions.first }
       let!(:answer) { create(:answer, question: question, user: user)}
 
-      before {
+      before do
         get "/api/v1/questions", params: { format: :json, access_token: access_token.token }
-      }
+      end
 
       it "returns 200 status code" do
         expect(response).to be_successful
@@ -67,9 +67,9 @@ RSpec.describe "Questions API" do
 
     context "authorized" do
 
-      before {
+      before do
         get "/api/v1/questions/#{question.id}", params: { format: :json, access_token: access_token.token }
-      }
+      end
 
       it "returns 200 status code" do
         expect(response).to be_successful

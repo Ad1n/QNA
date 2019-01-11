@@ -19,10 +19,10 @@ RSpec.describe "Profiles API" do
       let!(:me) { create(:user) }
       let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-      before {
-        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(me)
+      before do
+        # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(me)
         get "/api/v1/profiles/me", params: { format: :json, access_token: access_token.token }
-      }
+      end
 
       it "returns 200 status code" do
         expect(response).to be_successful
@@ -62,10 +62,9 @@ RSpec.describe "Profiles API" do
         let(:admin) { create(:user, admin: true) }
         let(:access_token_admin) { create(:access_token, resource_owner_id: admin.id) }
 
-        before {
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
+        before do
           get "/api/v1/profiles", params: { format: :json, access_token: access_token_admin.token }
-        }
+        end
 
         it "returns 200 status code" do
           expect(response).to be_successful
@@ -83,10 +82,9 @@ RSpec.describe "Profiles API" do
         let(:me) { create(:user) }
         let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-        before {
-          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(me)
+        before do
           get "/api/v1/profiles", params: { format: :json, access_token: access_token.token }
-        }
+        end
 
         it "return 403 status" do
           expect(JSON.parse(response.body)["status"]).to eq 403

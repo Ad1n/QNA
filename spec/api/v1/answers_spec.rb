@@ -24,9 +24,9 @@ RSpec.describe "Answers API" do
 
     context "authorized" do
 
-      before {
+      before do
         get "/api/v1/answers/#{answer.id}", params: { format: :json, access_token: access_token.token }
-      }
+      end
 
       it "returns 200 status code" do
         expect(response).to be_successful
