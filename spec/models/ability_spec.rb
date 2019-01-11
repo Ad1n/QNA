@@ -39,8 +39,10 @@ describe Ability do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
 
+    it { should be_able_to :index, Question }
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
+    it { should be_able_to :show, Answer }
     it { should be_able_to :create, Comment }
 
     it { should be_able_to :update, question, user: user }

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       resources :profiles do
         get :me, on: :collection
       end
+      resources :questions do
+        resources :answers, except: :index, shallow: true
+      end
     end
   end
 
