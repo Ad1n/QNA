@@ -42,11 +42,12 @@ RSpec.describe User, type: :model do
     context "User has no authorization" do
 
       context "App do not return user's email" do
-        let(:auth) { OmniAuth::AuthHash.new(provider: "github", uid: "123456", info: { email: nil }) }
-        let(:created_user) { create(:user) }
+        let(:auth) { OmniAuth::AuthHash.new(provider: :github, uid: "123456", info: { email: nil }) }
 
         it "returns created default user" do
-          expect(User.find_for_oauth(auth, created_user)).to eq created_user
+          default_user = User.find_for_oauth(auth)
+          expect(default_user.email).to eq "unconfirmed@user.wait"
+          expect(User.last).to eq default_user
         end
       end
 
