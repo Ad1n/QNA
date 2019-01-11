@@ -14,12 +14,9 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations, dependent: :destroy
 
-<<<<<<< HEAD
   scope :all_except, ->(user) { where.not(id: user) }
+
   attr_reader :auth, :created_user
-=======
-  attr_reader :auth, :created_user
->>>>>>> Refactoring in business logic
 
   def author_of?(object)
     id == object.user_id

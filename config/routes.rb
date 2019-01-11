@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
-=======
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
->>>>>>>  Refactoring. Secure authentification.
+
   root to: "questions#index"
 
   namespace :api do
