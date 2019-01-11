@@ -73,6 +73,13 @@ gem 'cancancan'
 # Oauth provider maker
 gem 'doorkeeper', '4.2.6'
 
+# Json creater
+gem "active_model_serializers"
+
+# Json parser
+gem "oj"
+gem "oj_mimic_json"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -101,6 +108,7 @@ group :development do
 end
 
 group :test do
+
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 
