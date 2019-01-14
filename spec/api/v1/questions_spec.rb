@@ -2,17 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "Questions API" do
   describe "GET /index" do
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        get "/api/v1/questions", params: { format: :json }
-        expect(response.status).to eq 401
-      end
 
-      it "returns 401 status if  invalid access_token" do
-        get "/api/v1/questions", params: { format: :json, access_token: "123" }
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      get "/api/v1/questions", params: { format: :json }.merge(options)
     end
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
       let(:user) { create(:user) }
@@ -53,17 +48,11 @@ RSpec.describe "Questions API" do
     let!(:comment) { create(:comment, user: user, commentable: question) }
     let!(:attachment) { create(:attachment, attachable: question) }
 
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        get "/api/v1/questions/#{question.id}", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it "returns 401 status if  invalid access_token" do
-        get "/api/v1/questions/#{question.id}", params: { format: :json, access_token: "123" }
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}", params: { format: :json }.merge(options)
     end
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
 
@@ -129,17 +118,11 @@ RSpec.describe "Questions API" do
     let!(:user) { create(:user) }
     let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        post "/api/v1/questions", params: { format: :json, question: { title: "Test title", body: "test body" } }
-        expect(response.status).to eq 401
-      end
-
-      it "returns 401 status if  invalid access_token" do
-        post "/api/v1/questions", params: { format: :json, question: { title: "Test title", body: "test body" }, access_token: "123" }
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      post "/api/v1/questions", params: { format: :json, question: { title: "Test title", body: "test body" } }.merge(options)
     end
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
 
@@ -162,4 +145,6 @@ RSpec.describe "Questions API" do
       end
     end
   end
+
+
 end

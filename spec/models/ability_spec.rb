@@ -6,16 +6,12 @@ describe Ability do
 
   describe "for quest" do
     let(:user) { nil }
-
-    it { should be_able_to :read, Question }
-    it { should be_able_to :read, Answer }
-    it { should be_able_to :read, Comment }
+    it { should be_able_to :read, [Question, Answer, Comment] }
     it { should_not be_able_to :manage, :all }
   end
 
   describe "for admin" do
     let(:user) { create(:user, admin: true) }
-
     it { should be_able_to :manage, :all }
   end
 
@@ -39,44 +35,33 @@ describe Ability do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
 
-    it { should be_able_to :index, Question }
-    it { should be_able_to :create, Question }
-    it { should be_able_to :create, Answer }
-    it { should be_able_to :show, Answer }
+    it { should be_able_to [:index, :create], Question }
+    it { should be_able_to [:create, :show], Answer }
     it { should be_able_to :create, Comment }
 
-    it { should be_able_to :update, question, user: user }
-    it { should_not be_able_to :update, question_other, user: user }
+    it { should be_able_to [:update, :destroy], question, user: user }
+    it { should_not be_able_to [:update, :destroy], question_other, user: user }
 
-    it { should be_able_to :update, answer, user: user }
-    it { should_not be_able_to :update, answer_other, user: user }
+    it { should be_able_to [:update, :destroy, :choose_best], answer, user: user }
+    it { should_not be_able_to [:update, :destroy], answer_other, user: user }
 
-    it { should be_able_to :destroy, question, user: user }
-    it { should_not be_able_to :destroy, question_other, user: user }
-
-    it { should be_able_to :destroy, answer, user: user }
-    it { should_not be_able_to :destroy, answer_other, user: user }
-
-    it { should be_able_to :choose_best, answer, user: user }
     it { should_not be_able_to :choose_best, other_question_answer, user: user }
 
     context "vote" do
 
-      before {
+      before do
         question_with_vote
         question_other
         vote_for
         question
         answer_other
         answer
-      }
+      end
 
       it { should_not be_able_to :vote, question_with_vote, user: user }
       it { should be_able_to :unvote, question_with_vote, user: user }
 
-      it { should be_able_to :vote, question_other, user: user }
-      it { should be_able_to :unvote, question_other, user: user }
-
+      it { should be_able_to [:vote, :unvote], question_other, user: user }
       it { should_not be_able_to :vote, question, user: user }
 
       it { should be_able_to :vote, answer_other, user: user }
@@ -86,13 +71,13 @@ describe Ability do
 
     context "unvote" do
 
-      before {
+      before do
         question_with_vote
         unvote_for
         question
         answer_other
         answer
-      }
+      end
 
       it { should_not be_able_to :unvote, question_with_vote, user: user }
       it { should be_able_to :vote, question_with_vote, user: user }
@@ -101,23 +86,19 @@ describe Ability do
 
       it { should be_able_to :unvote, answer_other, user: user }
       it { should_not be_able_to :unvote, answer, user: user }
-
-
     end
 
     context "attachment" do
-      before {
+      before do
         question
         question_other
         my_attachment
         other_attachment
-      }
+      end
 
       it { should_not be_able_to :destroy, other_attachment, user: user }
       it { should be_able_to :destroy, my_attachment, user: user }
 
     end
-
-
   end
 end

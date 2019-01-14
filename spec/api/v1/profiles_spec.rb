@@ -2,25 +2,19 @@ require 'rails_helper'
 
 RSpec.describe "Profiles API" do
 
-  describe 'GET /me' do
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        get "/api/v1/profiles/me", params: { format: :json }
-        expect(response.status).to eq 401
-      end
+  def do_request(options = {})
+    get "/api/v1/profiles/me", params: { format: :json }.merge(options)
+  end
 
-      it "returns 401 status if  invalid access_token" do
-        get "/api/v1/profiles/me", params: { format: :json, access_token: "123" }
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET /me' do
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
       let!(:me) { create(:user) }
       let!(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
       before do
-        # allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(me)
         get "/api/v1/profiles/me", params: { format: :json, access_token: access_token.token }
       end
 
@@ -43,17 +37,8 @@ RSpec.describe "Profiles API" do
   end
 
   describe "GET /index" do
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        get "/api/v1/profiles", params: { format: :json }
-        expect(response.status).to eq 401
-      end
 
-      it "returns 401 status if  invalid access_token" do
-        get "/api/v1/profiles", params: { format: :json, access_token: "123" }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
       let!(:other) { create_list(:user, 3) }
@@ -98,5 +83,4 @@ RSpec.describe "Profiles API" do
       end
     end
   end
-
 end
