@@ -37,7 +37,6 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #choose_best_answer' do
 
-
     context "Author of question chooses best answer" do
 
       sign_in_user
@@ -45,16 +44,15 @@ RSpec.describe AnswersController, type: :controller do
       before do
         question
         answer
+        post :choose_best, params: { id: answer.id }
       end
 
       it "makes best answer" do
-        post :choose_best, params: { id: answer.id }
         answer.reload
         expect(answer.best_answer_id).to_not be_nil
       end
 
       it "redirects to question answers" do
-        post :choose_best, params: { id: answer.id }
         expect(response).to redirect_to question_path(question)
       end
     end
@@ -122,38 +120,40 @@ RSpec.describe AnswersController, type: :controller do
 
     context "Author updates answer" do
 
+      before do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' } }, format: :js
+      end
+
       it 'assigns the requested answer to @answer' do
-        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(assigns(:answer)).to eq answer
       end
 
       it 'assigns the question' do
-        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes answer attributes' do
-        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body' } }, format: :js
         answer.reload
         expect(answer.body).to eq 'new body'
       end
 
       it 'renders update template' do
-        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(response).to render_template :update
       end
     end
 
     context "Non-author updates answer" do
 
-      it 'doesnt change answer attributes' do
+      before do
         patch :update, params: { id: answer2, question_id: question, answer: { body: 'new body' } }, format: :js
+      end
+
+      it 'doesnt change answer attributes' do
         answer2.reload
         expect(answer2.body).to_not eq 'new body'
       end
 
       it 'has status code 403' do
-        patch :update, params: { id: answer2, question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(response.status).to eq(403)
       end
     end

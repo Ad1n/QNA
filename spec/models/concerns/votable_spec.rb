@@ -55,18 +55,19 @@ describe "votable" do
 
     let!(:question_without_vote) { create(:question, user: user) }
 
+    after do
+      expect(question_without_vote.votes.first.votable_type).to eq "Question"
+      expect(question_without_vote.votes.first.votable_id).to eq question_without_vote.id
+    end
+
     it "create new vote in database for vote action" do
       expect{ question_without_vote.make_vote(user, "vote") }.to change{ Vote.count }.by(1)
       expect(question_without_vote.object_rating(user)).to eq 1
-      expect(question_without_vote.votes.first.votable_type).to eq "Question"
-      expect(question_without_vote.votes.first.votable_id).to eq question_without_vote.id
     end
 
     it "create new vote in database for unvote action" do
       expect{ question_without_vote.make_vote(user, "unvote") }.to change{ Vote.count }.by(1)
       expect(question_without_vote.object_rating(user)).to eq -1
-      expect(question_without_vote.votes.first.votable_type).to eq "Question"
-      expect(question_without_vote.votes.first.votable_id).to eq question_without_vote.id
     end
 
   end

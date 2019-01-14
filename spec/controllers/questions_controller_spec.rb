@@ -87,12 +87,20 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
 
+    # This part can not ref due to "Deep error"
     context "non-authenticated user updates question" do
+      before do
+        patch :update, params: { id: question, question: { title: "New title", body: 'New body' } }, format: :js
+      end
+
       it 'doesnt change question attributes' do
-        patch :update, params: { id: question, question: { title: "new title", body: 'new body' } }, format: :js
         question.reload
-        expect(question.body).to_not eq 'new body'
-        expect(question.title).to_not eq 'new title'
+        expect(question.title).to_not eq 'New title'
+        expect(question.body).to_not eq 'New body'
+      end
+
+      it 'receives response status 401' do
+        expect(response.status).to eq(401)
       end
     end
 
@@ -105,66 +113,58 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to eq question
       end
 
-      it 'changes question attributes' do
+      def request
         patch :update, params: { id: question, question: { title: "New title", body: "New body" } }, format: :js
-        question.reload
-        expect(question.title).to eq 'New title'
-        expect(question.body).to eq 'New body'
       end
 
-      it 'receives response status 200' do
-        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response.status).to eq(200)
+      def param_for
+        { status: 200, equals: :to }
       end
+
+      it_behaves_like "updated question"
     end
 
     context "as authenticated author of question with invalid attributes" do
       sign_in_user
       let!(:question) { create(:question, user: @user) }
 
-      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } }, format: :js }
-
-      it 'does not change question attributes' do
-        question.reload
-        expect(question.title).to_not eq 'new title'
-        expect(question.body).to_not eq nil
+      def request
+        patch :update, params: { id: question, question: { title: 'New title', body: nil } }, format: :js
       end
 
-      it 'receives response status 200' do
-        expect(response.status).to eq(200)
+      def param_for
+        { status: 200, equals: :to_not }
       end
+
+      it_behaves_like "updated question"
     end
 
     context "as authenticated non-author with valid attributes" do
       sign_in_user
 
-      it 'doesnt change question attributes' do
+      def request
         patch :update, params: { id: question, question: { title: "New title", body: "New body" } }, format: :js
-        question.reload
-        expect(question.title).to_not eq 'New title'
-        expect(question.body).to_not eq 'New body'
       end
 
-      it 'receives response status 403' do
-        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response.status).to eq(403)
+      def param_for
+        { status: 403, equals: :to_not }
       end
+
+      it_behaves_like "updated question"
     end
 
     context "as authenticated non-author with invalid attributes" do
       sign_in_user
 
-      before { patch :update, params: { id: question, question: { title: 'new title', body: nil } }, format: :js }
-
-      it 'does not change question attributes' do
-        question.reload
-        expect(question.title).to_not eq 'new title'
-        expect(question.body).to_not eq nil
+      def request
+        patch :update, params: { id: question, question: { title: 'New title', body: nil } }, format: :js
       end
 
-      it 'receives response status 403' do
-        expect(response.status).to eq(403)
+      def param_for
+        { status: 403, equals: :to_not }
       end
+
+      it_behaves_like "updated question"
     end
   end
 

@@ -36,71 +36,28 @@ describe ApplicationController, type: :controller do
 
   describe "POST #vote" do
 
-    context "Authenticated user" do
-      sign_in_user
-
-      before {
-        post :create, params: { title: "title", body: "body" }
-      }
-
-      specify "has status code 200" do
-        routes.draw { post "vote" => "with_votables#vote" }
-        post :vote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json
-        expect(response.status).to eq 200
-      end
-
-      it 'saves the new vote in the database' do
-        routes.draw { post "vote" => "with_votables#vote" }
-        expect { post :vote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json }.to change(WithVotable.first.votes, :count).by(+1)
-      end
-
+    def route
+      routes.draw { post "vote" => "with_votables#vote" }
     end
 
-    context "Non-authenticated user" do
-
-      before {
-        post :create, params: { title: "title", body: "body" }
-      }
-
-      it 'saves the new vote in the database' do
-        routes.draw { post "vote" => "with_votables#vote" }
-        expect { post :vote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json }.to_not change(WithVotable.first.votes, :count)
-      end
+    def request
+      post :vote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json
     end
+
+    it_behaves_like "voted vote/unvote"
+
   end
 
   describe "POST #unvote" do
 
-    context "Authenticated user" do
-      sign_in_user
-
-      before {
-        post :create, params: { title: "title", body: "body" }
-      }
-
-      specify "has status code 200" do
-        routes.draw { post "unvote" => "with_votables#unvote" }
-        post :unvote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json
-        expect(response.status).to eq 200
-      end
-
-      it 'saves the new vote in the database' do
-        routes.draw { post "unvote" => "with_votables#unvote" }
-        expect { post :unvote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json }.to change(WithVotable.first.votes, :count).by(+1)
-      end
-
+    def route
+      routes.draw { post "unvote" => "with_votables#unvote" }
     end
 
-    context "Non-authenticated user" do
-
-      before {
-        post :create, params: { title: "title", body: "body" }
-      }
-
-      it 'saves the new vote in the database' do
-        routes.draw { post "unvote" => "with_votables#unvote" }
-        expect { post :unvote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json }.to_not change(WithVotable.first.votes, :count)
-      end
+    def request
+      post :unvote, params: { votable: WithVotable.first, id: WithVotable.first.id }, format: :json
     end
+
+    it_behaves_like "voted vote/unvote"
   end
 end

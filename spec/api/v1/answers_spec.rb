@@ -10,17 +10,11 @@ RSpec.describe "Answers API" do
     let!(:comment) { create(:comment, user: user, commentable: answer) }
     let!(:attachment) { create(:attachment, attachable: answer) }
 
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        get "/api/v1/answers/#{answer.id}", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it "returns 401 status if  invalid access_token" do
-        get "/api/v1/answers/#{answer.id}", params: { format: :json, access_token: "123" }
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      get "/api/v1/answers/#{answer.id}", params: { format: :json }.merge(options)
     end
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
 
@@ -73,20 +67,13 @@ RSpec.describe "Answers API" do
     let!(:question) { create(:question, user: user) }
     let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-    context "unauthorized" do
-      it "returns 401 status if there is no access_token" do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: { body: "test body" }, question_id: question.id }
-        expect(response.status).to eq 401
-      end
-
-      it "returns 401 status if  invalid access_token" do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json,
-                                                                   answer: { body: "test body" },
-                                                                   question_id: question.id,
-                                                                   access_token: "123" }
-        expect(response.status).to eq 401
-      end
+    def do_request(options = {})
+      post "/api/v1/questions/#{question.id}/answers", params: { format: :json,
+                                                                 answer: { body: "test body" },
+                                                                 question_id: question.id }.merge(options)
     end
+
+    it_behaves_like "API is unauthorized"
 
     context "authorized" do
 
