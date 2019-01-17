@@ -9,5 +9,9 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  def subscribe_by(user)
+    subscribes.where(user: user)
+  end
+
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 end

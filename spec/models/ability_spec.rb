@@ -20,6 +20,7 @@ describe Ability do
     let(:other) { create(:user) }
     let(:question) { create(:question, user: user) }
     let(:question_other) { create(:question, user: other) }
+    let(:subscribe) { create(:subscribe, subscribable: question, user: user) }
     let(:answer) { create(:answer, question: question, user: user) }
     let(:answer_other) { create(:answer, question: question, user: other) }
     let(:other_question_answer) { create(:answer, question: question_other, user: other ) }
@@ -46,6 +47,26 @@ describe Ability do
     it { should_not be_able_to [:update, :destroy], answer_other, user: user }
 
     it { should_not be_able_to :choose_best, other_question_answer, user: user }
+
+    context "subscribe" do
+
+      before do
+        question
+      end
+
+      it { should be_able_to :subscribe, question, user: user }
+      it { should_not be_able_to :unsubscribe, question, user: user }
+    end
+
+    context "unsubscribe" do
+      before do
+        question
+        subscribe
+      end
+
+      it { should be_able_to :unsubscribe, question, user: user }
+      it { should_not be_able_to :subscribe, question, user: user }
+    end
 
     context "vote" do
 
