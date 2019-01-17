@@ -80,6 +80,12 @@ gem "active_model_serializers"
 gem "oj"
 gem "oj_mimic_json"
 
+# Sheduled tasks
+gem "whenever"
+gem "sidekiq"
+gem "sinatra", ">= 1.3.0", require: nil
+gem "sidetiq"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -116,6 +122,7 @@ group :test do
   gem 'rails-controller-testing' # If you are using Rails 5.x
   gem 'launchy'
   gem 'json_spec'
+  gem 'rspec-sidekiq'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

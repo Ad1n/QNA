@@ -19,6 +19,5 @@ module Votable
     def make_vote(user, action_name)
       action_name == "vote" ? @vote = votes.create!(score: 1, user: user) : @vote = votes.create!(score: -1, user: user)
     end
-
   end
 end
