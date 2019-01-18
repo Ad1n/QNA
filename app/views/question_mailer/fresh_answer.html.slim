@@ -1,0 +1,10 @@
+h1 Received new answer for your subscribed question:
+h3= @answer.question.title
+
+table id="questions-list"
+  tr
+    th Answer body
+    th Author
+  tr
+    th= @answer.body
+    th= @answer.user.email

@@ -12,15 +12,14 @@ describe "subscribable" do
 
   let(:user) { create(:user) }
   let!(:question) { create(:question, user: user) }
-  let!(:subscribe) { create(:subscribe, subscribable: question, user: user) }
 
   it "has the module" do
     expect(WithSubscribable.include?(Subscribable)).to eq true
   end
 
   describe "question" do
-    it "has many subscribes" do
-      expect(question.subscribes).to eq [subscribe]
+    it "Created question has a auto-subscribe" do
+      expect(question.subscribes.first).to be_a(Subscribe)
     end
   end
 end

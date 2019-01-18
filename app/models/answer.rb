@@ -1,4 +1,9 @@
 class Answer < ApplicationRecord
+  after_save do |answer|
+    @subscribed_users = answer.question.subscribes.map(&:user)
+    SubscribedQuestionJob.perform_later(@subscribed_users, answer)
+  end
+
   include Votable
   include Commentable
 
@@ -18,5 +23,4 @@ class Answer < ApplicationRecord
       update!(best_answer_id: true)
     end
   end
-
 end

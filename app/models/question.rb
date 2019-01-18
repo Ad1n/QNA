@@ -1,4 +1,9 @@
 class Question < ApplicationRecord
+
+  after_save do |question|
+    question.subscribes.create!(user: question.user)
+  end
+
   include Votable
   include Commentable
   include Subscribable
