@@ -1,9 +1,4 @@
 class Question < ApplicationRecord
-
-  after_save do |question|
-    question.subscribes.create!(user: question.user)
-  end
-
   include Votable
   include Commentable
   include Subscribable
@@ -14,9 +9,13 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  def subscribe_by(user)
-    subscribes.where(user: user)
-  end
+  after_save :auto_subscribe
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
+
+  private
+
+  def auto_subscribe
+    subscribes.create!(user: user)
+  end
 end

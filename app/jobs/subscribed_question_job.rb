@@ -3,7 +3,7 @@ class SubscribedQuestionJob < ApplicationJob
 
   def perform(users, answer)
     users.each do |user|
-      QuestionMailer.fresh_answer(user, answer).deliver_now
+      QuestionMailer.fresh_answer(user, answer).deliver_later
     end
   end
 end

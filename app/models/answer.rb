@@ -1,9 +1,4 @@
 class Answer < ApplicationRecord
-  after_save do |answer|
-    @subscribed_users = answer.question.subscribes.map(&:user)
-    SubscribedQuestionJob.perform_later(@subscribed_users, answer)
-  end
-
   include Votable
   include Commentable
 
@@ -12,6 +7,8 @@ class Answer < ApplicationRecord
   has_many :attachments, as: :attachable, dependent: :destroy
 
   validates :body, presence: true
+
+  after_save :digest_for_subscribers
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
@@ -22,5 +19,12 @@ class Answer < ApplicationRecord
       question.answers.update_all(best_answer_id: false)
       update!(best_answer_id: true)
     end
+  end
+
+  private
+
+  def digest_for_subscribers
+    @subscribed_users = question.subscribes.map(&:user)
+    SubscribedQuestionJob.perform_later(@subscribed_users, self)
   end
 end

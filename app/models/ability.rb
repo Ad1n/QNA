@@ -24,12 +24,12 @@ class Ability
   def user_abilities
     guest_abilities
 
-    can :subscribe, Question do |object|
+    can :create, Subscribe do |object|
       object.subscribe_by(@user).empty?
     end
 
-    can :unsubscribe, Question do |object|
-      !object.subscribe_by(@user).empty?
+    can :destroy, Subscribe do |object|
+      object.subscribable.subscribe_by(@user).any?
     end
 
     can :index, Question

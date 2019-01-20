@@ -1,12 +1,11 @@
-module Subscribed
-  extend ActiveSupport::Concern
+class SubscribesController < ApplicationController
 
-  included do
-    before_action :set_subscribable, only: %i[subscribe unsubscribe]
-    before_action :set_subscribe, only: %i[unsubscribe]
-  end
+  before_action :set_subscribable, only: %i[create destroy]
+  before_action :set_subscribe, only: %i[destroy]
 
-  def subscribe
+  authorize_resource
+
+  def create
     if @subscribable.subscribe_by(current_user).empty?
       @subscribe = @subscribable.subscribes.new(user: current_user)
       respond_to do |format|
@@ -19,7 +18,7 @@ module Subscribed
     end
   end
 
-  def unsubscribe
+  def destroy
     if @subscribable.subscribe_by(current_user).any?
       respond_to do |format|
         if @subscribe.destroy
@@ -38,10 +37,20 @@ module Subscribed
   end
 
   def set_subscribable
-    @subscribable = model_klass.find(params[:id])
+    @subscribable = find_subscribable
   end
 
-  def model_klass
-    controller_name.classify.constantize
+  def find_subscribable
+    params.each do |name, value|
+      if name =~ /(.+)_id$/
+        @subscribable = $1.classify.constantize.find(value)
+        return @subscribable
+      end
+    end
+    nil
+  end
+
+  def comments_params
+    params.require(:subscribe)
   end
 end

@@ -47,24 +47,8 @@ describe Ability do
 
     it { should_not be_able_to :choose_best, other_question_answer, user: user }
 
-    context "subscribe" do
-
-      before do
-        question
-      end
-
-      it { should_not be_able_to :subscribe, question, user: user }
-      it { should be_able_to :unsubscribe, question, user: user }
-    end
-
-    context "unsubscribe" do
-      before do
-        question
-      end
-
-      it { should be_able_to :unsubscribe, question, user: user }
-      it { should_not be_able_to :subscribe, question, user: user }
-    end
+    it { should be_able_to :create, Subscribe }
+    it { should be_able_to :destroy, Subscribe }
 
     context "vote" do
 

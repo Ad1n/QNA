@@ -41,12 +41,12 @@ p= render "shared/new_comment", resource: @question if user_signed_in?
                                                     remote: true
 
 .question_subscribe id="question_subscribe"
-  - if can?(:subscribe, @question)
-    = link_to "Follow this question", polymorphic_path(@question, action: :subscribe), class: "question-subscribe badge badge-info",
+  - if current_user && @question.subscribe_by(current_user).empty?
+    = link_to "Follow this question", question_subscribes_path(@question), class: "question-subscribe badge badge-info",
             method: :post,
             remote: true
-  - if  can?(:unsubscribe, @question)
-    = link_to "Unsubscribe", polymorphic_path(@question, action: :unsubscribe), class: "question-unsubscribe badge badge-light",
+  - if @question.subscribe_by(current_user).any?
+    = link_to "Unsubscribe", question_subscribe_path(@question, @subscribe), class: "question-unsubscribe badge badge-light",
             method: :delete,
             remote: true,
             data: { confirm: 'Are u sure ?' }
