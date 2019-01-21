@@ -10,3 +10,6 @@ config/database.yml
 
 #Ignore uploaded files
 /public/uploads
+
+# Redis DB file
+.rdb
