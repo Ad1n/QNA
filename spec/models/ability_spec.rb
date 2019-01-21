@@ -47,6 +47,9 @@ describe Ability do
 
     it { should_not be_able_to :choose_best, other_question_answer, user: user }
 
+    it { should be_able_to :create, Subscribe }
+    it { should be_able_to :destroy, Subscribe }
+
     context "vote" do
 
       before do

@@ -40,6 +40,17 @@ p= render "shared/new_comment", resource: @question if user_signed_in?
                                                     method: :post,
                                                     remote: true
 
+.question_subscribe id="question_subscribe"
+  - if current_user && @question.subscribe_by(current_user).empty?
+    = link_to "Follow this question", question_subscribes_path(@question), class: "question-subscribe badge badge-info",
+            method: :post,
+            remote: true
+  - if @question.subscribe_by(current_user).any?
+    = link_to "Unsubscribe", question_subscribe_path(@question, @subscribe), class: "question-unsubscribe badge badge-light",
+            method: :delete,
+            remote: true,
+            data: { confirm: 'Are u sure ?' }
+
 H4 List of answers:
 
 .answers id="answers"

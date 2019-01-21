@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe User, type: :model do
 
   describe "Associations" do
-    %i[questions answers votes authorizations].each do |assoc|
+    %i[questions answers votes authorizations subscribes].each do |assoc|
       it { should have_many(assoc) }
     end
   end

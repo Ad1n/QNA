@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
   before_action :build_answer, only: %i[show]
+  before_action :check_subscribe, only: %i[show]
   after_action :publish_question, only: %i[create]
 
   respond_to :html, :js
@@ -39,6 +40,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def check_subscribe
+    @subscribe = @question.subscribes.first
+  end
 
   def build_answer
     @answer = @question.answers.build

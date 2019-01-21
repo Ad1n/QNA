@@ -8,6 +8,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_save :digest_for_subscribers
+
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   scope :sort_from_best_answer, -> { order(best_answer_id: :desc) }
@@ -19,4 +21,10 @@ class Answer < ApplicationRecord
     end
   end
 
+  private
+
+  def digest_for_subscribers
+    @subscribed_users = question.subscribes.map(&:user)
+    SubscribedQuestionJob.perform_later(@subscribed_users, self)
+  end
 end

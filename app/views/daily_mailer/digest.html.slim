@@ -1,0 +1,14 @@
+h1 Daily digest
+h3 Last questions !
+
+table id="questions-list"
+tr
+  th Question title
+  th Question body
+  th Author
+
+=@questions.each do |question|
+  tr
+    th= question.title
+    th= question.body
+    th= question.user.email
