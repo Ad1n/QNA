@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  get '/search', to: "search#search"
+
   resources :questions, concerns: [:votable, :commentable] do
     resources :subscribes, only: %i[create destroy]
     resources :answers, except: :index, shallow: true, concerns: [:votable, :commentable] do

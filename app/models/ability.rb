@@ -15,6 +15,7 @@ class Ability
 
   def guest_abilities
     can :read, :all
+    can :search, [Question, Answer, Comment]
   end
 
   def admin_abilities
@@ -23,6 +24,9 @@ class Ability
 
   def user_abilities
     guest_abilities
+
+    can :search, ThinkingSphinx
+
 
     can :create, Subscribe do |object|
       object.subscribe_by(@user).empty?

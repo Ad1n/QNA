@@ -32,7 +32,9 @@ feature "Delete file from answer", %q(
       visit question_path(question)
 
       within "div#attachment-#{attachment.id}" do
-        click_on "Delete file"
+        accept_alert do
+          click_on "Delete file"
+        end
       end
 
       expect(page).to_not have_link(attachment.file)

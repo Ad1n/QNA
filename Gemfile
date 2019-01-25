@@ -86,17 +86,24 @@ gem "sidekiq"
 gem "sinatra", ">= 1.3.0", require: nil
 gem "sidetiq"
 
+# Full text search
+gem 'mysql2',          '~> 0.3',    :platform => :ruby
+gem 'thinking-sphinx', '~> 4.0'
+
+# Console
+gem 'rb-readline'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'fuubar'
   gem 'rails-controller-testing'
   gem 'webdrivers'
-  gem 'database_cleaner'
   gem 'capybara', '>= 2.15'
-  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+  # gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
   gem 'capybara-email'
 
   #Create models with tables in RSpec tests
@@ -116,6 +123,7 @@ end
 group :test do
 
   # Easy installation and use of chromedriver to run system tests with Chrome
+  gem "selenium-webdriver"
   gem 'chromedriver-helper'
 
   gem 'shoulda-matchers', '4.0.0.rc1'

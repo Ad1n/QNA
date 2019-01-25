@@ -1,0 +1,34 @@
+h1 Search results
+
+table class="table"
+  thead
+    tr
+      th scope="col" ID
+      th scope="col" TYPE
+      th scope="col" EMAIL
+      th scope="col" ADMIN
+      th scope="col" TITLE
+      th scope="col" BODY
+      th scope="col" QUESTION
+      th scope="col" BEST ANSWER
+      th scope="col" COMMENTABLE TYPE
+      th scope="col" COMMENTABLE ID
+      th scope="col" USER
+      th scope="col" CREATED_AT
+      th scope="col" UPDATED_AT
+  tbody
+    -@result.each do |res|
+      tr
+        td= res.id
+        td= res.class.name
+        td= res.try(:email)
+        td= res.try(:admin)
+        td= res.try(:title)
+        td= res.try(:body)
+        td= res.try(:question_id)
+        td= res.try(:best_answer_id)
+        td= res.try(:commentable_type)
+        td= res.try(:commentable_id)
+        td= res.try(:user_id)
+        td= res.created_at
+        td= res.updated_at
