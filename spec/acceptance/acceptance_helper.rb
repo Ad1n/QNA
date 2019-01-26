@@ -8,6 +8,8 @@ RSpec.configure do |config|
 
   Capybara.server = :puma
 
+
+
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
@@ -20,6 +22,7 @@ RSpec.configure do |config|
     chrome_args.each { |arg| opts.add_argument(arg) }
     Capybara::Selenium::Driver.new(app, browser: :chrome, options: opts, desired_capabilities: caps)
   end
+
 
   Capybara.configure do |config|
     # change this to :chrome to observe tests in a real browser

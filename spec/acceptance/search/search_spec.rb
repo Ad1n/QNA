@@ -42,33 +42,39 @@ feature 'Searching','
 
         case klass
         when "Questions"
-          %i[id title body created_at updated_at user_id].each do |attr|
+          %i[id title body created_at updated_at].each do |attr|
             expect(page).to have_content(question.send(attr))
           end
+          expect(page).to have_content(question.user.email)
         when "Answers"
-          %i[id body question_id created_at updated_at user_id best_answer_id].each do |attr|
+          %i[id body created_at updated_at best_answer_id].each do |attr|
             expect(page).to have_content(answer.send(attr))
           end
+          expect(page).to have_content(answer.user.email)
         when "Comments"
-          %i[id body created_at updated_at user_id commentable_type commentable_id].each do |attr|
+          %i[id body created_at updated_at].each do |attr|
             expect(page).to have_content(comment.send(attr))
           end
+          expect(page).to have_content(comment.user.email)
         when "Users"
           %i[id email created_at updated_at].each do |attr|
             expect(page).to have_content(user.send(attr))
           end
         when "All"
-          %i[id title body created_at updated_at user_id].each do |attr|
+          %i[id title body created_at updated_at].each do |attr|
             expect(page).to have_content(question.send(attr))
           end
+          expect(page).to have_content(question.user.email)
 
-          %i[id body question_id created_at updated_at user_id best_answer_id].each do |attr|
+          %i[id body created_at updated_at best_answer_id].each do |attr|
             expect(page).to have_content(answer.send(attr))
           end
+          expect(page).to have_content(answer.user.email)
 
-          %i[id body created_at updated_at user_id commentable_type commentable_id].each do |attr|
+          %i[id body created_at updated_at user_id].each do |attr|
             expect(page).to have_content(comment.send(attr))
           end
+          expect(page).to have_content(comment.user.email)
 
           %i[id email created_at updated_at].each do |attr|
             expect(page).to have_content(user.send(attr))
