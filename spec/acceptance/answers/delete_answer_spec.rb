@@ -20,7 +20,11 @@ feature 'Delete answer', %(
     sign_in(user_author)
     visit question_path(question)
     expect(page).to have_content(answer.body)
-    click_on "Delete"
+
+    accept_alert do
+      click_on "Delete"
+    end
+
     expect(page).to_not have_content(answer.body)
   end
 

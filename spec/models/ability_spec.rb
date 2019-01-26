@@ -8,6 +8,9 @@ describe Ability do
     let(:user) { nil }
     it { should be_able_to :read, [Question, Answer, Comment] }
     it { should_not be_able_to :manage, :all }
+    %w[Question Answer Comment].each do |klass|
+      it { should be_able_to :search, klass.classify.constantize }
+    end
   end
 
   describe "for admin" do
@@ -28,6 +31,12 @@ describe Ability do
     let(:unvote_for) { create(:unvote, votable: question_with_vote, user: user) }
     let(:my_attachment) { create(:attachment, attachable: question) }
     let(:other_attachment) { create(:attachment, attachable: question_other) }
+
+    %w[Question Answer Comment ThinkingSphinx].each do |klass|
+      it { should be_able_to :search, klass.classify.constantize }
+    end
+    it { should_not be_able_to :search, User }
+
 
     it { should be_able_to :me, User, user: user }
     it { should_not be_able_to :index, User }

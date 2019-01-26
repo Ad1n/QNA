@@ -42,9 +42,8 @@ feature 'Question editing', %(
         fill_in "question_title", with: "Edited title"
         fill_in "question_body", with: "Edited body"
         click_on "Save"
+        click_on "Hide"
 
-        expect(page).to_not have_content question.title
-        expect(page).to_not have_content question.body
         expect(page).to have_content "Edited title"
         expect(page).to have_content "Edited body"
       end

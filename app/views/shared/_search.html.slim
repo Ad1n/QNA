@@ -1,0 +1,15 @@
+h3 Search among the
+h3 class="search-options" id="search-options"
+div id="search_panel"
+  div class="btn-group" role="group" aria-label="Basic example"
+    button type="button" name="Question" class="btn btn-light question-search" Questions
+    button type="button" class="btn btn-light answer" Answers
+    button type="button" class="btn btn-light comment" Comments
+    button type="button" class="btn btn-light user" Users
+    button type="button" class="btn btn-light all" All
+
+  = form_tag(search_path, method: :get) do
+    = text_field_tag :query, params[:query]
+    = hidden_field_tag :search_type, "ThinkingSphinx"
+    = submit_tag 'Search', name: nil, class: "btn btn-outline-success my-2 my-sm-0"
+

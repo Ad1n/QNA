@@ -1,0 +1,28 @@
+h1 Search results
+
+table class="table"
+  thead
+    tr
+      th scope="col" ID
+      th scope="col" TYPE
+      th scope="col" EMAIL
+      th scope="col" ADMIN
+      th scope="col" TITLE
+      th scope="col" BODY
+      th scope="col" BEST ANSWER
+      th scope="col" AUTHOR
+      th scope="col" CREATED_AT
+      th scope="col" UPDATED_AT
+  tbody
+    -@result.each do |res|
+      tr
+        td= res.id
+        td= res.class.name
+        td= res.try(:email)
+        td= res.try(:admin)
+        td= res.try(:title)
+        td= res.try(:body)
+        td= res.try(:best_answer_id)
+        td= res.try(:user)&.email
+        td= res.created_at
+        td= res.updated_at

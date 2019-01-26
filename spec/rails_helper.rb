@@ -52,7 +52,25 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
+
+  config.before :each do |example|
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.init
+      ThinkingSphinx::Test.start index: false
+    end
+
+    ThinkingSphinx::Configuration.instance.settings['real_time_callbacks'] =
+        (example.metadata[:type] == :request)
+  end
+
+  config.after(:each) do |example|
+    # Stop Sphinx and clear out data after request specs
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.stop
+      ThinkingSphinx::Test.clear
+    end
+  end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -77,6 +95,29 @@ RSpec.configure do |config|
 
   config.include(OmniauthMacros)
 
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, :sphinx => true) do
+    DatabaseCleaner.strategy = :deletion
+  end
+
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
