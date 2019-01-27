@@ -93,6 +93,9 @@ gem 'thinking-sphinx', '~> 4.0'
 # Console
 gem 'rb-readline'
 
+# Java for assets compiller in production
+gem "therubyracer"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -118,6 +121,11 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "letter_opener"
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :test do
