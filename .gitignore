@@ -1,15 +1,38 @@
+/.bundle
+
+# Ignore the default SQL lite database
+/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles
+/log/*.log
+/tmp
+
 .idea
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 config/database.yml
-
-**/log
-**/tmp
+/doc/examples
 
 .byebug_history
 
 #Ignore uploaded files
+/public/system
+/public/tmp
 /public/uploads
+/public/spec
+
+# Mac OS files
+.DS_Store
+
+# Coverage files
+/coverage
+
+.powrc
+
+# Ignore application configuration
+/config/application.yml
+.zeus.sock
 
 # Redis DB file
 dump.rdb
