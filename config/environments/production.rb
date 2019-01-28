@@ -96,5 +96,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'http://78.155.218.127' }
 
-  config.action_cable.allowed_request_origins = ["http://78.155.218.127"]
+  config.action_cable.allowed_request_origins = ["http://78.155.218.127/"]
+  config.action_cable.url = 'ws://78.155.218.127/cable'
 end
