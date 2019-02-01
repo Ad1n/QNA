@@ -1,4 +1,5 @@
-.comment_text id="#{comment.commentable_type.downcase}"
-  .comment_date
-    = comment.created_at.strftime("%d/%m/%Y at %I:%M%p:  ")
-  = comment.body
+- cache comment do
+  .comment_text id="#{comment.commentable_type.downcase}"
+    .comment_date
+      = comment.created_at.strftime("%d/%m/%Y at %I:%M%p:  ")
+    = comment.body

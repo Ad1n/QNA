@@ -99,6 +99,9 @@ gem "mini_racer"
 # server for rake-apps
 gem "unicorn"
 
+# sessions and cache in redis DB
+gem "redis-rails"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

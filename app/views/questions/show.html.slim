@@ -1,64 +1,65 @@
-.errors_question
-  p= render "shared/errors", resource: @question
+- cache @question do
+  .errors_question
+    p= render "shared/errors", resource: @question
 
-.question
-  H1.title= @question.title
-  p.body= @question.body
-  p Attachments:
-  ul
-    - @question.attachments.each do |a|
-      .attachment_file id="attachment-#{a.id}"
-        li = link_to a.file.identifier, a.file.url
-        - if current_user&.author_of?(@question)
-          = link_to 'Delete file', attachment_path(a),remote: true,
-                                                      method: :delete,
-                                                      class: "text-muted links-decor",
-                                                      data: { confirm: 'Are u sure ?' }
-  - if can?(:edit, @question)
-    p= link_to "Edit question", "", class: "edit-question-link", data: { id: @question.id }
-    p= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}" } do |f|
-      = f.label :title, "Title: "
-      = f.text_field :title
-      = f.label :body, "Question text: "
-      = f.text_area :body
-      = f.submit "Save"
-      = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
+  .question
+    H1.title= @question.title
+    p.body= @question.body
+    p Attachments:
+    ul
+      - @question.attachments.each do |a|
+        .attachment_file id="attachment-#{a.id}"
+          li = link_to a.file.identifier, a.file.url
+          - if current_user&.author_of?(@question)
+            = link_to 'Delete file', attachment_path(a),remote: true,
+                                                        method: :delete,
+                                                        class: "text-muted links-decor",
+                                                        data: { confirm: 'Are u sure ?' }
+    - if can?(:edit, @question)
+      p= link_to "Edit question", "", class: "edit-question-link", data: { id: @question.id }
+      p= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}" } do |f|
+        = f.label :title, "Title: "
+        = f.text_field :title
+        = f.label :body, "Question text: "
+        = f.text_area :body
+        = f.submit "Save"
+        = f.button "Hide", class: "edit-question-hide", data: { id: @question.id }
 
-.question_comments
-  =render @question.comments
-p= render "shared/new_comment", resource: @question if user_signed_in?
+  .question_comments
+    =render @question.comments
+  p= render "shared/new_comment", resource: @question if user_signed_in?
 
-.question_votement id="question_votement"
-  - if can?(:vote, @question)
-    = link_to "+", polymorphic_path(@question, action: :vote), class: "question-vote badge badge-success",
-                                                  method: :post,
-                                                  remote: true
-  .question_rating class="badge badge-light"
-    = @question.rating
-  - if can?(:unvote, @question)
-    = link_to "-", polymorphic_path(@question, action: :unvote), class: "question-vote badge badge-danger",
+  .question_votement id="question_votement"
+    - if can?(:vote, @question)
+      = link_to "+", polymorphic_path(@question, action: :vote), class: "question-vote badge badge-success",
                                                     method: :post,
                                                     remote: true
+    .question_rating class="badge badge-light"
+      = @question.rating
+    - if can?(:unvote, @question)
+      = link_to "-", polymorphic_path(@question, action: :unvote), class: "question-vote badge badge-danger",
+                                                      method: :post,
+                                                      remote: true
 
-.question_subscribe id="question_subscribe"
-  - if current_user && @question.subscribe_by(current_user).empty?
-    = link_to "Follow this question", question_subscribes_path(@question), class: "question-subscribe badge badge-info",
-            method: :post,
-            remote: true
-  - if @question.subscribe_by(current_user).any?
-    = link_to "Unsubscribe", question_subscribe_path(@question, @subscribe), class: "question-unsubscribe badge badge-light",
-            method: :delete,
-            remote: true,
-            data: { confirm: 'Are u sure ?' }
+  .question_subscribe id="question_subscribe"
+    - if current_user && @question.subscribe_by(current_user).empty?
+      = link_to "Follow this question", question_subscribes_path(@question), class: "question-subscribe badge badge-info",
+              method: :post,
+              remote: true
+    - if @question.subscribe_by(current_user).any?
+      = link_to "Unsubscribe", question_subscribe_path(@question, @subscribe), class: "question-unsubscribe badge badge-light",
+              method: :delete,
+              remote: true,
+              data: { confirm: 'Are u sure ?' }
 
-H4 List of answers:
+  H4 List of answers:
 
-.answers id="answers"
-  = render @question.answers.sort_from_best_answer
+  .answers id="answers"
+    = render @question.answers.sort_from_best_answer
 
-.errors
-  p= render "shared/errors", resource: @answer
+  .errors
+    p= render "shared/errors", resource: @answer
 
-p= render "answers/new" if user_signed_in?
+  p= render "answers/new" if user_signed_in?
 
-p= link_to "Back", questions_path
+  p= link_to "Back", questions_path

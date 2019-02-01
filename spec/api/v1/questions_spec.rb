@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Questions API" do
+
   describe "GET /index" do
 
     def do_request(options = {})
@@ -12,8 +13,8 @@ RSpec.describe "Questions API" do
     context "authorized" do
       let(:user) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-      let!(:questions) { create_list(:question, 2, user: user) }
-      let(:question) { questions.first }
+      let!(:question) { create(:question, user: user) }
+      let!(:question2) { create(:question, user: user) }
       let!(:answer) { create(:answer, question: question, user: user)}
 
       before do
@@ -30,7 +31,7 @@ RSpec.describe "Questions API" do
 
       %w(id title body created_at updated_at).each do |attr|
         it "question object contains #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("questions/0/#{attr}")
+          expect(response.body).to be_json_eql(question2.send(attr.to_sym).to_json).at_path("questions/0/#{attr}")
         end
       end
 
