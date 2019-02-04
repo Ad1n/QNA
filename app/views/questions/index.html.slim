@@ -1,12 +1,13 @@
-H1 All questions:
+- cache collection_cache_key_for :question do
+  H1 All questions:
 
-table id="questions-list"
-  tr
-    th Question title
-    th Question body
-    th Author
+  table id="questions-list"
+    tr
+      th Question title
+      th Question body
+      th Author
 
-  = render @questions
+    = render @questions
 
-- if can?(:create, Question)
-  p= link_to 'Ask question', new_question_path
+  - if can?(:create, Question)
+    p= link_to 'Ask question', new_question_path
